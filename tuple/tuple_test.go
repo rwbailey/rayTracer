@@ -129,4 +129,16 @@ var _ = Describe("Tuple", func() {
 			Expect(v1.Subtract(v2)).To(Equal(v3))
 		})
 	})
+
+	Context("negation", func() {
+		It("can be negated", func() {
+			// Given
+			v1 := tuple.Vector(5, 5, 5)
+
+			v2 := tuple.Vector(-5, -5, -5)
+
+			// Then
+			Expect(v1.Negate()).To(Equal(v2))
+		})
+	})
 })

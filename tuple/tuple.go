@@ -59,3 +59,12 @@ func (t1 Tuple) Subtract(t2 Tuple) Tuple {
 		W: t1.W - t2.W,
 	}
 }
+
+func (t Tuple) Negate() Tuple {
+	return Tuple{
+		X: t.X * -1,
+		Y: t.Y * -1,
+		Z: t.Z * -1,
+		W: t.W * -1,
+	}
+}
