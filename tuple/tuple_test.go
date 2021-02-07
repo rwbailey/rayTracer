@@ -85,15 +85,48 @@ var _ = Describe("Tuple", func() {
 	})
 
 	Context("subtraction", func() {
-		It("can be subtracted", func() {
+		It("Two points can be subtracted to get the vector from one to the other", func() {
 			// Given
 			p1 := tuple.Point(1, 2, 3)
-			v1 := tuple.Vector(5, 5, 5)
+			p2 := tuple.Point(5, 5, 5)
 
-			r := tuple.New(-4, -3, -2, 1)
+			v := tuple.Vector(-4, -3, -2)
 
 			// Then
-			Expect(p1.Subtract(v1)).To(Equal(r))
+			Expect(p1.Subtract(p2)).To(Equal(v))
+		})
+
+		It("A vector can be subtracted from a point to yield a new point", func() {
+			// Given
+			p1 := tuple.Point(1, 2, 3)
+			v1 := tuple.Point(5, 5, 5)
+
+			p2 := tuple.Vector(-4, -3, -2)
+
+			// Then
+			Expect(p1.Subtract(v1)).To(Equal(p2))
+		})
+
+		It("Two points can be subtracted to get the vector from one to the other", func() {
+			// Given
+			p1 := tuple.Point(1, 2, 3)
+			p2 := tuple.Point(5, 5, 5)
+
+			v := tuple.Vector(-4, -3, -2)
+
+			// Then
+			Expect(p1.Subtract(p2)).To(Equal(v))
+		})
+
+		It("Two vectors can be subtracted to yield the change in direction between them", func() {
+			// Given
+			v1 := tuple.Vector(1, 2, 3)
+			v2 := tuple.Vector(5, 5, 5)
+
+			v3 := tuple.Vector(-4, -3, -2)
+
+			// Then
+			Expect(v1.Subtract(v2)).To(Equal(v3))
 		})
 	})
 })
