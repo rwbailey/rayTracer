@@ -38,7 +38,7 @@ func (t Tuple) IsVector() bool {
 
 // Equals returns true if t1 == t2, else returns false
 func (t1 Tuple) Equals(t2 Tuple) bool {
-	return equals(t1.X, t2.X) && equals(t1.Y, t2.Y) && equals(t1.Z, t2.Z) && equals(t1.W, t2.W)
+	return floatEquals(t1.X, t2.X) && floatEquals(t1.Y, t2.Y) && floatEquals(t1.Z, t2.Z) && floatEquals(t1.W, t2.W)
 }
 
 // Add returns t1 + t2
@@ -62,17 +62,17 @@ func (t1 Tuple) Subtract(t2 Tuple) Tuple {
 }
 
 // Negate returns -t when given t
-func Negate(t Tuple) Tuple {
+func (t Tuple) Negate() Tuple {
 	return Tuple{
 		X: t.X * -1,
 		Y: t.Y * -1,
 		Z: t.Z * -1,
-		W: t.W * -1,
+		W: t.W * -1, // Do we need this?
 	}
 }
 
 // Compare the equivelance of two floating point numbers to within the error margin epsilon
-func equals(a, b float64) bool {
+func floatEquals(a, b float64) bool {
 	if math.Abs(a-b) < epsilon {
 		return true
 	}
