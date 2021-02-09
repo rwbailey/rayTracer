@@ -93,6 +93,10 @@ func (t Tuple) Normalise() Tuple {
 	return Vector(x, y, z)
 }
 
+func (a Tuple) Dot(b Tuple) float64 {
+	return a.X*b.X + a.Y*b.Y + a.Z*b.Z
+}
+
 // Compare the equivelance of two floating point numbers to within the error margin epsilon
 func floatEquals(a, b float64) bool {
 	if math.Abs(a-b) < epsilon {

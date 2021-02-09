@@ -151,3 +151,12 @@ func TestVectorNormalisation(t *testing.T) {
 
 	assert.EqualValues(t, 1, Vector(1/a, 2/a, 3/a).Magnitude())
 }
+
+func TestDotProduct(t *testing.T) {
+	// Given
+	a := Vector(1, 2, 3)
+	b := Vector(2, 3, 4)
+
+	// Then
+	assert.EqualValues(t, 20, a.Dot(b))
+}
