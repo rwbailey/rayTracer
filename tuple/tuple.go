@@ -71,6 +71,16 @@ func (t Tuple) Negate() Tuple {
 	}
 }
 
+func (t Tuple) Multiply(a float64) Tuple {
+
+	return Tuple{
+		X: t.X * a,
+		Y: t.Y * a,
+		Z: t.Z * a,
+		W: t.W * a,
+	}
+}
+
 // Compare the equivelance of two floating point numbers to within the error margin epsilon
 func floatEquals(a, b float64) bool {
 	if math.Abs(a-b) < epsilon {

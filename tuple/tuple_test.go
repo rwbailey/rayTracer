@@ -107,3 +107,15 @@ func TestTupleNegation(t *testing.T) {
 	// Then
 	assert.EqualValues(t, v2, v1.Negate())
 }
+
+func TestTupleScaling(t *testing.T) {
+	// Given
+	a := tuple.Tuple{1, -2, 3, -4}
+
+	s1 := 3.5
+	s2 := 0.5
+
+	// Then
+	assert.EqualValues(t, tuple.Tuple{3.5, -7, 10.5, -14}, a.Multiply(s1))
+	assert.EqualValues(t, tuple.Tuple{0.5, -1, 1.5, -2}, a.Multiply(s2))
+}
