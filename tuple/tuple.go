@@ -67,7 +67,7 @@ func (t Tuple) Negate() Tuple {
 		X: t.X * -1,
 		Y: t.Y * -1,
 		Z: t.Z * -1,
-		W: t.W * -1, // Do we need this?
+		W: t.W * -1,
 	}
 }
 
@@ -83,6 +83,14 @@ func (t Tuple) Multiply(a float64) Tuple {
 
 func (t Tuple) Magnitude() float64 {
 	return math.Sqrt(t.X*t.X + t.Y*t.Y + t.Z*t.Z)
+}
+
+func (t Tuple) Normalise() Tuple {
+	x := t.X / t.Magnitude()
+	y := t.Y / t.Magnitude()
+	z := t.Z / t.Magnitude()
+
+	return Vector(x, y, z)
 }
 
 // Compare the equivelance of two floating point numbers to within the error margin epsilon

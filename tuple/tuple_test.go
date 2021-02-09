@@ -136,3 +136,18 @@ func TestVectorMagnitude(t *testing.T) {
 	assert.EqualValues(t, math.Sqrt(14), v4.Magnitude())
 	assert.EqualValues(t, math.Sqrt(14), v5.Magnitude())
 }
+
+func TestVectorNormalisation(t *testing.T) {
+	// Given
+	v1 := Vector(4, 0, 0)
+	v2 := Vector(1, 2, 3)
+
+	// Then
+
+	a := math.Sqrt(14)
+
+	assert.EqualValues(t, Vector(1, 0, 0), v1.Normalise())
+	assert.EqualValues(t, Vector(1/a, 2/a, 3/a), v2.Normalise())
+
+	assert.EqualValues(t, 1, Vector(1/a, 2/a, 3/a).Magnitude())
+}
