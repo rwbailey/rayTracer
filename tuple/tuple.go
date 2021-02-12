@@ -97,6 +97,14 @@ func (a Tuple) Dot(b Tuple) float64 {
 	return a.X*b.X + a.Y*b.Y + a.Z*b.Z
 }
 
+func (a Tuple) Cross(b Tuple) Tuple {
+	return Vector(
+		a.Y*b.Z-a.Z*b.Y,
+		a.Z*b.X-a.X*b.Z,
+		a.X*b.Y-a.Y*b.X,
+	)
+}
+
 // Compare the equivelance of two floating point numbers to within the error margin epsilon
 func floatEquals(a, b float64) bool {
 	if math.Abs(a-b) < epsilon {

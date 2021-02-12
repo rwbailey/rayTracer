@@ -160,3 +160,13 @@ func TestDotProduct(t *testing.T) {
 	// Then
 	assert.EqualValues(t, 20, a.Dot(b))
 }
+
+func TestCrossProduct(t *testing.T) {
+	// Given
+	a := Vector(1, 2, 3)
+	b := Vector(2, 3, 4)
+
+	// Then
+	assert.EqualValues(t, Vector(-1, 2, -1), a.Cross(b))
+	assert.EqualValues(t, Vector(1, -2, 1), b.Cross(a))
+}
