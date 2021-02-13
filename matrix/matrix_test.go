@@ -24,3 +24,29 @@ func TestMatrixConstructionAndInspection(t *testing.T) {
 	assert.EqualValues(t, 13.5, m[3][0])
 	assert.EqualValues(t, 15.5, m[3][2])
 }
+
+func TestMatrixComparrison(t *testing.T) {
+	// Given
+	m1 := matrix.New([][]float64{
+		{1, 2, 3, 4},
+		{5.5, 6.5, 7.5, 8.5},
+		{9, 10, 11, 12},
+		{13.5, 14.5, 15.5, 16.5},
+	})
+	m2 := matrix.New([][]float64{
+		{1, 2, 3, 4},
+		{5.5, 6.5, 7.5, 8.5},
+		{9, 10, 11, 12},
+		{13.5, 14.5, 15.5, 16.5},
+	})
+	m3 := matrix.New([][]float64{
+		{1, 2, 3, 4},
+		{5.5, 6.5, 7.5, 8.5},
+		{9, 10, 11, 12},
+		{13.5, 14.5, 15.5, 16.51},
+	})
+
+	// Then
+	assert.True(t, m1.Equals(m2))
+	assert.False(t, m1.Equals(m3))
+}
