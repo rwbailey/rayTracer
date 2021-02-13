@@ -72,21 +72,21 @@ func (c *Canvas) CanvasToPPM() image.PPM {
 
 			ppm += fmt.Sprint(r) + " "
 			n += 4
-			if n >= 68 {
+			if n >= 67 {
 				ppm = strings.TrimSuffix(ppm, " ")
 				ppm += "\n"
 				n = 0
 			}
 			ppm += fmt.Sprint(g) + " "
 			n += 4
-			if n >= 64 {
+			if n >= 67 {
 				ppm = strings.TrimSuffix(ppm, " ")
 				ppm += "\n"
 				n = 0
 			}
 			ppm += fmt.Sprint(b) + " "
 			n += 4
-			if n >= 64 {
+			if n >= 67 {
 				ppm = strings.TrimSuffix(ppm, " ")
 				ppm += "\n"
 				n = 0
