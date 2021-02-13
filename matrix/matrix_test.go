@@ -57,3 +57,28 @@ func TestMatrixComparison(t *testing.T) {
 	assert.False(t, m1.Equals(m3))
 	assert.True(t, m1.Equals(m4))
 }
+
+func TestMatrixMultiplication(t *testing.T) {
+	// Given
+	a := matrix.New([][]float64{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+		{9, 8, 7, 6},
+		{5, 4, 3, 2},
+	})
+	b := matrix.New([][]float64{
+		{-2, 1, 2, 3},
+		{3, 2, 1, -1},
+		{4, 3, 6, 5},
+		{1, 2, 7, 8},
+	})
+	ab := matrix.New([][]float64{
+		{20, 22, 50, 48},
+		{44, 54, 114, 108},
+		{40, 58, 110, 102},
+		{16, 26, 46, 42},
+	})
+
+	// Then
+	assert.EqualValues(t, ab, a.Multiply(b))
+}
