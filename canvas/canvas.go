@@ -1,6 +1,13 @@
 package canvas
 
-import "github.com/rwbailey/ray/colour"
+import (
+	"fmt"
+	"math"
+	"strings"
+
+	"github.com/rwbailey/ray/colour"
+	"github.com/rwbailey/ray/image"
+)
 
 type Canvas struct {
 	Width  int
@@ -26,4 +33,47 @@ func New(w, h int) *Canvas {
 
 func (c *Canvas) WritePixel(x, y int, colour colour.Colour) {
 	c.Pixels[x][y] = colour
+}
+
+func (c *Canvas) CanvasToPPM() image.PPM {
+	ppm := "P3\n" + fmt.Sprint(c.Width) + " " + fmt.Sprint(c.Height) + "\n255\n"
+
+	for y := 0; y < c.Height; y++ {
+		for x := 0; x < c.Width; x++ {
+
+			red := c.Pixels[x][y].Red
+			green := c.Pixels[x][y].Green
+			blue := c.Pixels[x][y].Blue
+
+			if red < 0 {
+				red = 0
+			}
+			if green < 0 {
+				green = 0
+			}
+			if blue < 0 {
+				blue = 0
+			}
+			if red > 1 {
+				red = 1
+			}
+			if green > 1 {
+				green = 1
+			}
+			if blue > 1 {
+				blue = 1
+			}
+
+			r := int(math.Round(red * 255))
+			g := int(math.Round(green * 255))
+			b := int(math.Round(blue * 255))
+
+			ppm += fmt.Sprint(r) + " "
+			ppm += fmt.Sprint(g) + " "
+			ppm += fmt.Sprint(b) + " "
+		}
+		ppm = strings.TrimSuffix(ppm, " ")
+		ppm += "\n"
+	}
+	return image.PPM(ppm)
 }
