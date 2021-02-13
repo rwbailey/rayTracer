@@ -35,10 +35,12 @@ func (c *Canvas) WritePixel(x, y int, colour colour.Colour) {
 	c.Pixels[x][y] = colour
 }
 
+// TODO: Refactor this shit
 func (c *Canvas) CanvasToPPM() image.PPM {
 	ppm := "P3\n" + fmt.Sprint(c.Width) + " " + fmt.Sprint(c.Height) + "\n255\n"
 
 	for y := 0; y < c.Height; y++ {
+		n := 0
 		for x := 0; x < c.Width; x++ {
 
 			red := c.Pixels[x][y].Red
@@ -69,11 +71,31 @@ func (c *Canvas) CanvasToPPM() image.PPM {
 			b := int(math.Round(blue * 255))
 
 			ppm += fmt.Sprint(r) + " "
+			n += 4
+			if n >= 68 {
+				ppm = strings.TrimSuffix(ppm, " ")
+				ppm += "\n"
+				n = 0
+			}
 			ppm += fmt.Sprint(g) + " "
+			n += 4
+			if n >= 64 {
+				ppm = strings.TrimSuffix(ppm, " ")
+				ppm += "\n"
+				n = 0
+			}
 			ppm += fmt.Sprint(b) + " "
+			n += 4
+			if n >= 64 {
+				ppm = strings.TrimSuffix(ppm, " ")
+				ppm += "\n"
+				n = 0
+			}
 		}
+		n = 0
 		ppm = strings.TrimSuffix(ppm, " ")
 		ppm += "\n"
 	}
+	fmt.Println(ppm)
 	return image.PPM(ppm)
 }

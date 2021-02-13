@@ -74,3 +74,30 @@ func TestCanvasToPPMBody(t *testing.T) {
 	assert.EqualValues(t, a2, lines[4])
 	assert.EqualValues(t, a3, lines[5])
 }
+
+func TestCanvasToPPMSplitLongLines(t *testing.T) {
+	// Given
+	c := canvas.New(10, 2)
+	colour := colour.New(1, 0.8, 0.6)
+
+	// When
+	for y := 0; y < 2; y++ {
+		for x := 0; x < 10; x++ {
+			c.WritePixel(x, y, colour)
+		}
+	}
+
+	ppm := c.CanvasToPPM()
+
+	// Then
+	a1 := "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204"
+	a2 := "153 255 204 153 255 204 153 255 204 153 255 204 153"
+	a3 := "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204"
+	a4 := "153 255 204 153 255 204 153 255 204 153 255 204 153"
+
+	lines := strings.Split(string(ppm), "\n")
+	assert.EqualValues(t, a1, lines[3])
+	assert.EqualValues(t, a2, lines[4])
+	assert.EqualValues(t, a3, lines[5])
+	assert.EqualValues(t, a4, lines[6])
+}
