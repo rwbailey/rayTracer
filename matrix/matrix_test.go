@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/rwbailey/ray/matrix"
+	"github.com/rwbailey/ray/tuple"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -58,7 +59,7 @@ func TestMatrixComparison(t *testing.T) {
 	assert.True(t, m1.Equals(m4))
 }
 
-func TestMatrixMultiplication(t *testing.T) {
+func TestMatrixMultiplicationByMatrix(t *testing.T) {
 	// Given
 	a := matrix.New([][]float64{
 		{1, 2, 3, 4},
@@ -80,5 +81,19 @@ func TestMatrixMultiplication(t *testing.T) {
 	})
 
 	// Then
-	assert.EqualValues(t, ab, a.Multiply(b))
+	assert.EqualValues(t, ab, a.MultiplyMatrix(b))
+}
+
+func TestMatrixMultiplicationByTuple(t *testing.T) {
+	// Given
+	m := matrix.New([][]float64{
+		{1, 2, 3, 4},
+		{2, 4, 4, 2},
+		{8, 6, 4, 1},
+		{0, 0, 0, 1},
+	})
+	a := tuple.New(1, 2, 3, 1)
+
+	// Then
+	assert.EqualValues(t, tuple.New(18, 24, 33, 1), m.MultiplyTuple(a))
 }

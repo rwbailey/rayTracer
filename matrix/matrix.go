@@ -2,6 +2,8 @@ package matrix
 
 import (
 	"math"
+
+	"github.com/rwbailey/ray/tuple"
 )
 
 const epsilon = 0.00001
@@ -48,17 +50,28 @@ func floatEquals(a, b float64) bool {
 }
 
 // We only need to multiply 4x4 matrices
-func (a Matrix) Multiply(b Matrix) Matrix {
-	m := Zero(4)
+func (a Matrix) MultiplyMatrix(b Matrix) Matrix {
+	ab := Zero(4)
 
 	for row := 0; row < 4; row++ {
 		for col := 0; col < 4; col++ {
-			m[row][col] = a[row][0]*b[0][col] +
+			ab[row][col] = a[row][0]*b[0][col] +
 				a[row][1]*b[1][col] +
 				a[row][2]*b[2][col] +
 				a[row][3]*b[3][col]
 		}
 	}
 
-	return m
+	return ab
+}
+
+func (m Matrix) MultiplyTuple(t tuple.Tuple) tuple.Tuple {
+	mt := tuple.New(0, 0, 0, 0)
+
+	mt.X = m[0][0]*t.X + m[0][1]*t.Y + m[0][2]*t.Z + m[0][3]*t.W
+	mt.Y = m[1][0]*t.X + m[1][1]*t.Y + m[1][2]*t.Z + m[1][3]*t.W
+	mt.Z = m[2][0]*t.X + m[2][1]*t.Y + m[2][2]*t.Z + m[2][3]*t.W
+	mt.W = m[3][0]*t.X + m[3][1]*t.Y + m[3][2]*t.Z + m[3][3]*t.W
+
+	return mt
 }
