@@ -96,6 +96,5 @@ func (c *Canvas) CanvasToPPM() image.PPM {
 		ppm = strings.TrimSuffix(ppm, " ")
 		ppm += "\n"
 	}
-	fmt.Println(ppm)
 	return image.PPM(ppm)
 }
