@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 
 	"github.com/rwbailey/ray/canvas"
 	"github.com/rwbailey/ray/colour"
@@ -26,13 +25,20 @@ func main() {
 	}
 
 	for proj.Position.Y >= 0 {
-		can.Pixels[899-int(proj.Position.X)][549-int(proj.Position.Y)] = white
+		x := int(proj.Position.X)
+		y := int(proj.Position.Y)
+
+		if x > 899 || y > 549 {
+			proj = p.Tick(env, proj)
+			continue
+		}
+
+		can.Pixels[899-x][549-y] = white
 		fmt.Println(proj.Position.Y)
 		proj = p.Tick(env, proj)
 	}
 
-	ppm := can.CanvasToPPM()
-	err := ioutil.WriteFile("image.ppm", []byte(ppm), 0644)
+	err := can.CanvasToPPM().Save("image.ppm")
 	if err != nil {
 		fmt.Println(err)
 	}
