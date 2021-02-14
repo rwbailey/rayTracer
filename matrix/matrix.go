@@ -111,3 +111,8 @@ func (m Matrix) Submatrix(r, c int) Matrix {
 	}
 	return Matrix(s)
 }
+
+// 3x3 only
+func (a Matrix) Minor(r, c int) float64 {
+	return a.Submatrix(r, c).Determinant2()
+}

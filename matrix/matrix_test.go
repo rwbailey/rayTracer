@@ -178,3 +178,17 @@ func TestSubmatrixExtraction(t *testing.T) {
 	// Then
 	assert.EqualValues(t, s2, b.Submatrix(2, 1))
 }
+
+func Test3x3MatrixMinor(t *testing.T) {
+	// Given
+	a := matrix.New([][]float64{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	})
+	b := a.Submatrix(1, 0)
+
+	// Then
+	assert.EqualValues(t, 25, b.Determinant2())
+	assert.EqualValues(t, 25, a.Minor(1, 0))
+}
