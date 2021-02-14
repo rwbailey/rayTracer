@@ -192,3 +192,18 @@ func Test3x3MatrixMinor(t *testing.T) {
 	assert.EqualValues(t, 25, b.Determinant2())
 	assert.EqualValues(t, 25, a.Minor(1, 0))
 }
+
+func TestMatrixCofactor(t *testing.T) {
+	// Given
+	a := matrix.New([][]float64{
+		{3, 5, 0},
+		{2, -1, -7},
+		{6, -1, 5},
+	})
+
+	// Then
+	assert.EqualValues(t, -12, a.Minor(0, 0))
+	assert.EqualValues(t, -12, a.Cofactor(0, 0))
+	assert.EqualValues(t, 25, a.Minor(1, 0))
+	assert.EqualValues(t, -25, a.Cofactor(1, 0))
+}

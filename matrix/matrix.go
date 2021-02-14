@@ -116,3 +116,11 @@ func (m Matrix) Submatrix(r, c int) Matrix {
 func (a Matrix) Minor(r, c int) float64 {
 	return a.Submatrix(r, c).Determinant2()
 }
+
+func (a Matrix) Cofactor(r, c int) float64 {
+	min := a.Minor(r, c)
+	if (r+c)%2 != 0 {
+		return -min
+	}
+	return min
+}
