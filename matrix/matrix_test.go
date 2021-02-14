@@ -144,3 +144,37 @@ func TestMatrixDeterminant2x2(t *testing.T) {
 	// Then
 	assert.EqualValues(t, 17, a.Determinant2())
 }
+
+func TestSubmatrixExtraction(t *testing.T) {
+	// Given
+	a := matrix.New([][]float64{
+		{1, 5, 3},
+		{-3, 2, 7},
+		{0, 6, -3},
+	})
+
+	s1 := matrix.New([][]float64{
+		{-3, 2},
+		{0, 6},
+	})
+
+	// Then
+	assert.EqualValues(t, s1, a.Submatrix(0, 2))
+
+	// Given
+	b := matrix.New([][]float64{
+		{-6, 1, 1, 6},
+		{-8, 5, 8, 6},
+		{-1, 0, 8, 2},
+		{-7, 1, -1, 1},
+	})
+
+	s2 := matrix.New([][]float64{
+		{-6, 1, 6},
+		{-8, 8, 6},
+		{-7, -1, 1},
+	})
+
+	// Then
+	assert.EqualValues(t, s2, b.Submatrix(2, 1))
+}

@@ -92,3 +92,22 @@ func (m Matrix) Transpose() Matrix {
 func (m Matrix) Determinant2() float64 {
 	return m[0][0]*m[1][1] - m[0][1]*m[1][0]
 }
+
+func (m Matrix) Submatrix(r, c int) Matrix {
+	d := len(m)
+	s := make([][]float64, 0, d-1)
+
+	for row := 0; row < d; row++ {
+		x := make([]float64, 0, d-1)
+		for col := 0; col < d; col++ {
+			if col == c || row == r {
+				continue
+			}
+			x = append(x, m[row][col])
+		}
+		if len(x) != 0 {
+			s = append(s, x)
+		}
+	}
+	return Matrix(s)
+}
