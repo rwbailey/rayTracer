@@ -87,3 +87,8 @@ func (m Matrix) Transpose() Matrix {
 	}
 	return t
 }
+
+// 2x2 only
+func (m Matrix) Determinant2() float64 {
+	return m[0][0]*m[1][1] - m[0][1]*m[1][0]
+}

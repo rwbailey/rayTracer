@@ -133,3 +133,14 @@ func TestMatrixTranspose(t *testing.T) {
 	assert.EqualValues(t, b, a.Transpose())
 	assert.EqualValues(t, z, z.Transpose())
 }
+
+func TestMatrixDeterminant2x2(t *testing.T) {
+	// Given
+	a := matrix.New([][]float64{
+		{1, 5},
+		{-3, 2},
+	})
+
+	// Then
+	assert.EqualValues(t, 17, a.Determinant2())
+}
