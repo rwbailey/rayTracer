@@ -323,3 +323,28 @@ func TestMoreInversions(t *testing.T) {
 	iC, _ := C.Inverse()
 	assert.True(t, iC.Equals(D))
 }
+
+func TestMultiplyMatrixProductByInverse(t *testing.T) {
+	// Given
+	A := matrix.New([][]float64{
+		{3, -9, 7, 3},
+		{3, -8, 2, -9},
+		{-4, 4, 4, 1},
+		{-6, 5, -1, 1},
+	})
+	B := matrix.New([][]float64{
+		{8, 2, 2, 2},
+		{3, -1, 7, 0},
+		{7, 0, 5, 4},
+		{6, -2, 0, 5},
+	})
+	C := A.MultiplyMatrix(B)
+	D := B.MultiplyMatrix(A)
+
+	// Then
+	iB, _ := B.Inverse()
+	assert.True(t, C.MultiplyMatrix(iB).Equals(A))
+
+	iA, _ := A.Inverse()
+	assert.True(t, D.MultiplyMatrix(iA).Equals(B))
+}
