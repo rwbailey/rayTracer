@@ -142,7 +142,7 @@ func TestMatrixDeterminant2x2(t *testing.T) {
 	})
 
 	// Then
-	assert.EqualValues(t, 17, a.Determinant2())
+	assert.EqualValues(t, 17, a.Determinant())
 }
 
 func TestSubmatrixExtraction(t *testing.T) {
@@ -189,7 +189,7 @@ func Test3x3MatrixMinor(t *testing.T) {
 	b := a.Submatrix(1, 0)
 
 	// Then
-	assert.EqualValues(t, 25, b.Determinant2())
+	assert.EqualValues(t, 25, b.Determinant())
 	assert.EqualValues(t, 25, a.Minor(1, 0))
 }
 
@@ -206,4 +206,36 @@ func TestMatrixCofactor(t *testing.T) {
 	assert.EqualValues(t, -12, a.Cofactor(0, 0))
 	assert.EqualValues(t, 25, a.Minor(1, 0))
 	assert.EqualValues(t, -25, a.Cofactor(1, 0))
+}
+
+func TestMatrixDeterminant(t *testing.T) {
+	// 3x3
+	// Given
+	a := matrix.New([][]float64{
+		{1, 2, 6},
+		{-5, 8, -4},
+		{2, 6, 4},
+	})
+
+	// Then
+	assert.EqualValues(t, 56, a.Cofactor(0, 0))
+	assert.EqualValues(t, 12, a.Cofactor(0, 1))
+	assert.EqualValues(t, -46, a.Cofactor(0, 2))
+	assert.EqualValues(t, -196, a.Determinant())
+
+	// 4x4
+	// Given
+	b := matrix.New([][]float64{
+		{-2, -8, 3, 5},
+		{-3, 1, 7, 3},
+		{1, 2, -9, 6},
+		{-6, 7, 7, -9},
+	})
+
+	// Then
+	assert.EqualValues(t, 690, b.Cofactor(0, 0))
+	assert.EqualValues(t, 447, b.Cofactor(0, 1))
+	assert.EqualValues(t, 210, b.Cofactor(0, 2))
+	assert.EqualValues(t, 51, b.Cofactor(0, 3))
+	assert.EqualValues(t, -4071, b.Determinant())
 }

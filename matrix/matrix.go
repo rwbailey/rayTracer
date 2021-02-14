@@ -89,8 +89,17 @@ func (m Matrix) Transpose() Matrix {
 }
 
 // 2x2 only
-func (m Matrix) Determinant2() float64 {
-	return m[0][0]*m[1][1] - m[0][1]*m[1][0]
+func (m Matrix) Determinant() float64 {
+	var det float64
+	d := len(m)
+	if d == 2 {
+		det = m[0][0]*m[1][1] - m[0][1]*m[1][0]
+	} else {
+		for col := 0; col < d; col++ {
+			det += m[0][col] * m.Cofactor(0, col)
+		}
+	}
+	return det
 }
 
 func (m Matrix) Submatrix(r, c int) Matrix {
@@ -114,7 +123,7 @@ func (m Matrix) Submatrix(r, c int) Matrix {
 
 // 3x3 only
 func (a Matrix) Minor(r, c int) float64 {
-	return a.Submatrix(r, c).Determinant2()
+	return a.Submatrix(r, c).Determinant()
 }
 
 func (a Matrix) Cofactor(r, c int) float64 {
