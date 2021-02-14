@@ -75,3 +75,15 @@ func (m Matrix) MultiplyTuple(t tuple.Tuple) tuple.Tuple {
 
 	return mt
 }
+
+func (m Matrix) Transpose() Matrix {
+	d := len(m)
+	t := Zero(d)
+
+	for row := 0; row < d; row++ {
+		for col := 0; col < d; col++ {
+			t[row][col] = m[col][row]
+		}
+	}
+	return t
+}

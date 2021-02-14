@@ -97,3 +97,39 @@ func TestMatrixMultiplicationByTuple(t *testing.T) {
 	// Then
 	assert.EqualValues(t, tuple.New(18, 24, 33, 1), m.MultiplyTuple(a))
 }
+
+func TestMatrixIdentityMultiplication(t *testing.T) {
+	// Given
+	i := matrix.Identity(4)
+	m := matrix.New([][]float64{
+		{0, 1, 2, 4},
+		{1, 2, 4, 8},
+		{2, 4, 8, 16},
+		{4, 8, 16, 32},
+	})
+
+	// Then
+	assert.EqualValues(t, m, i.MultiplyMatrix(m))
+	assert.EqualValues(t, m, m.MultiplyMatrix(i))
+}
+
+func TestMatrixTranspose(t *testing.T) {
+	// Given
+	a := matrix.New([][]float64{
+		{0, 9, 3, 0},
+		{9, 8, 0, 8},
+		{1, 8, 5, 3},
+		{0, 0, 5, 8},
+	})
+	b := matrix.New([][]float64{
+		{0, 9, 1, 0},
+		{9, 8, 8, 0},
+		{3, 0, 5, 5},
+		{0, 8, 3, 8},
+	})
+	z := matrix.Identity(3)
+
+	// Then
+	assert.EqualValues(t, b, a.Transpose())
+	assert.EqualValues(t, z, z.Transpose())
+}
