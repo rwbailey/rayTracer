@@ -259,3 +259,29 @@ func TestMatrixInvertibility(t *testing.T) {
 	assert.True(t, a.IsInvertable())
 	assert.False(t, b.IsInvertable())
 }
+
+func TestMatrixInversion(t *testing.T) {
+	// Given
+	a := matrix.New([][]float64{
+		{-5, 2, 6, -8},
+		{1, -5, 1, 8},
+		{7, 7, -6, -7},
+		{1, -3, 7, 4},
+	})
+	b, _ := a.Inverse()
+	B := matrix.New([][]float64{
+		{0.21805, 0.45113, 0.24060, -0.04511},
+		{-0.80827, -1.45677, -0.44361, 0.52068},
+		{-0.07895, -0.22368, -0.05263, 0.19737},
+		{-0.52256, -0.81391, -0.30075, 0.30639},
+	})
+
+	// Then
+	assert.EqualValues(t, 532, a.Determinant())
+	assert.EqualValues(t, -160, a.Cofactor(2, 3))
+	assert.EqualValues(t, -160.0/532, b[3][2])
+
+	assert.EqualValues(t, 105, a.Cofactor(3, 2))
+	assert.EqualValues(t, 105.0/532, b[2][3])
+	assert.True(t, b.Equals(B))
+}

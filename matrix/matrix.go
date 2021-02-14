@@ -1,6 +1,7 @@
 package matrix
 
 import (
+	"errors"
 	"math"
 
 	"github.com/rwbailey/ray/tuple"
@@ -135,4 +136,20 @@ func (a Matrix) Cofactor(r, c int) float64 {
 
 func (m Matrix) IsInvertable() bool {
 	return m.Determinant() != 0
+}
+
+func (m Matrix) Inverse() (Matrix, error) {
+	if !m.IsInvertable() {
+		return nil, errors.New("The Matrix cannot be inverted (Det == 0)")
+	}
+	d := len(m)
+	inv := Zero(d)
+
+	for row := 0; row < d; row++ {
+		for col := 0; col < d; col++ {
+			c := m.Cofactor(row, col)
+			inv[col][row] = c / m.Determinant()
+		}
+	}
+	return inv, nil
 }
