@@ -88,7 +88,6 @@ func (m Matrix) Transpose() Matrix {
 	return t
 }
 
-// 2x2 only
 func (m Matrix) Determinant() float64 {
 	var det float64
 	d := len(m)
@@ -132,4 +131,8 @@ func (a Matrix) Cofactor(r, c int) float64 {
 		return -min
 	}
 	return min
+}
+
+func (m Matrix) IsInvertable() bool {
+	return m.Determinant() != 0
 }

@@ -239,3 +239,23 @@ func TestMatrixDeterminant(t *testing.T) {
 	assert.EqualValues(t, 51, b.Cofactor(0, 3))
 	assert.EqualValues(t, -4071, b.Determinant())
 }
+
+func TestMatrixInvertibility(t *testing.T) {
+	// Given
+	a := matrix.New([][]float64{
+		{6, 4, 4, 4},
+		{5, 5, 7, 6},
+		{4, -9, 3, -7},
+		{9, 1, 7, -6},
+	})
+	b := matrix.New([][]float64{
+		{-4, 2, -2, 3},
+		{9, 6, 2, 6},
+		{0, -5, 1, -5},
+		{0, 0, 0, 0},
+	})
+
+	// Then
+	assert.True(t, a.IsInvertable())
+	assert.False(t, b.IsInvertable())
+}
