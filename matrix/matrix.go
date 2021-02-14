@@ -2,12 +2,10 @@ package matrix
 
 import (
 	"errors"
-	"math"
 
+	"github.com/rwbailey/ray/helpers"
 	"github.com/rwbailey/ray/tuple"
 )
-
-const epsilon = 0.00001
 
 type Matrix [][]float64
 
@@ -34,20 +32,12 @@ func Identity(n int) Matrix {
 func (m1 Matrix) Equals(m2 Matrix) bool {
 	for row := 0; row < len(m1); row++ {
 		for col := 0; col < len(m1[row]); col++ {
-			if !floatEquals(m1[row][col], m2[row][col]) {
+			if !helpers.FloatEquals(m1[row][col], m2[row][col]) {
 				return false
 			}
 		}
 	}
 	return true
-}
-
-// Compare the equivelance of two floating point numbers to within the error margin epsilon
-func floatEquals(a, b float64) bool {
-	if math.Abs(a-b) < epsilon {
-		return true
-	}
-	return false
 }
 
 // We only need to multiply 4x4 matrices

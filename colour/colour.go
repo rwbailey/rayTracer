@@ -1,8 +1,6 @@
 package colour
 
-import "math"
-
-const epsilon = 0.00001
+import "github.com/rwbailey/ray/helpers"
 
 type Colour struct {
 	Red   float64
@@ -52,13 +50,5 @@ func (c1 Colour) Product(c2 Colour) Colour {
 
 // Equals returns true if t1 == t2, else returns false
 func (a Colour) Equals(b Colour) bool {
-	return floatEquals(a.Red, b.Red) && floatEquals(a.Green, b.Green) && floatEquals(a.Blue, b.Blue)
-}
-
-// Compare the equivelance of two floating point numbers to within the error margin epsilon
-func floatEquals(a, b float64) bool {
-	if math.Abs(a-b) < epsilon {
-		return true
-	}
-	return false
+	return helpers.FloatEquals(a.Red, b.Red) && helpers.FloatEquals(a.Green, b.Green) && helpers.FloatEquals(a.Blue, b.Blue)
 }

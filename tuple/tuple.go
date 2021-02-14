@@ -1,8 +1,10 @@
 package tuple
 
-import "math"
+import (
+	"math"
 
-const epsilon = 0.00001
+	"github.com/rwbailey/ray/helpers"
+)
 
 type Tuple struct {
 	X float64
@@ -38,7 +40,7 @@ func (t Tuple) IsVector() bool {
 
 // Equals returns true if t1 == t2, else returns false
 func (t1 Tuple) Equals(t2 Tuple) bool {
-	return floatEquals(t1.X, t2.X) && floatEquals(t1.Y, t2.Y) && floatEquals(t1.Z, t2.Z) && floatEquals(t1.W, t2.W)
+	return helpers.FloatEquals(t1.X, t2.X) && helpers.FloatEquals(t1.Y, t2.Y) && helpers.FloatEquals(t1.Z, t2.Z) && helpers.FloatEquals(t1.W, t2.W)
 }
 
 // Add returns t1 + t2
@@ -103,12 +105,4 @@ func (a Tuple) Cross(b Tuple) Tuple {
 		a.Z*b.X-a.X*b.Z,
 		a.X*b.Y-a.Y*b.X,
 	)
-}
-
-// Compare the equivelance of two floating point numbers to within the error margin epsilon
-func floatEquals(a, b float64) bool {
-	if math.Abs(a-b) < epsilon {
-		return true
-	}
-	return false
 }
