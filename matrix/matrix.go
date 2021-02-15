@@ -183,3 +183,12 @@ func (m Matrix) RotateX(r float64) Matrix {
 	a[2][2] = math.Cos(r)
 	return a.MultiplyMatrix(m)
 }
+
+func (m Matrix) RotateY(r float64) Matrix {
+	a := Identity(4)
+	a[0][0] = math.Cos(r)
+	a[0][2] = math.Sin(r)
+	a[2][0] = -math.Sin(r)
+	a[2][2] = math.Cos(r)
+	return a.MultiplyMatrix(m)
+}
