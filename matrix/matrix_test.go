@@ -348,3 +348,31 @@ func TestMultiplyMatrixProductByInverse(t *testing.T) {
 	iA, _ := A.Inverse()
 	assert.True(t, D.MultiplyMatrix(iA).Equals(B))
 }
+
+func TestMultiplyByTransformationMatrix(t *testing.T) {
+	// Given
+	trans := matrix.Identity(4).Translate(5, -3, 2)
+	p := tuple.Point(-3, 4, 5)
+
+	// Then
+	assert.True(t, tuple.Point(2, 1, 7).Equals(trans.MultiplyTuple(p)))
+}
+
+func TestMultiplyByInverseOfTransformationMatrix(t *testing.T) {
+	// Given
+	trans := matrix.Identity(4).Translate(5, -3, 2)
+	inv, _ := trans.Inverse()
+	p := tuple.Point(-3, 4, 5)
+
+	// Then
+	assert.True(t, tuple.Point(-8, 7, 3).Equals(inv.MultiplyTuple(p)))
+}
+
+func TestTranslationDoesNotAffectVectors(t *testing.T) {
+	// Given
+	trans := matrix.Identity(4).Translate(5, -3, 2)
+	v := tuple.Vector(-3, 4, 5)
+
+	// Then
+	assert.True(t, v.Equals(trans.MultiplyTuple(v)))
+}

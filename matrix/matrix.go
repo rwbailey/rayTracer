@@ -143,3 +143,11 @@ func (m Matrix) Inverse() (Matrix, error) {
 	}
 	return inv, nil
 }
+
+func (m Matrix) Translate(x, y, z float64) Matrix {
+	t := Identity(4)
+	t[0][3] = x
+	t[1][3] = y
+	t[2][3] = z
+	return t.MultiplyMatrix(m)
+}
