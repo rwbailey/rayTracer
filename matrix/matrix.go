@@ -192,3 +192,12 @@ func (m Matrix) RotateY(r float64) Matrix {
 	a[2][2] = math.Cos(r)
 	return a.MultiplyMatrix(m)
 }
+
+func (m Matrix) RotateZ(r float64) Matrix {
+	a := Identity(4)
+	a[0][0] = math.Cos(r)
+	a[0][1] = -math.Sin(r)
+	a[1][0] = math.Sin(r)
+	a[1][1] = math.Cos(r)
+	return a.MultiplyMatrix(m)
+}

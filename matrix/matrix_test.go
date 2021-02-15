@@ -446,3 +446,14 @@ func TestRotationAroundTheYAxis(t *testing.T) {
 	assert.True(t, tuple.Point(math.Sqrt(2)/2, 0, math.Sqrt(2)/2).Equals(halfQuarter.Transform(p)))
 	assert.True(t, tuple.Point(1, 0, 0).Equals(fullQuarter.Transform(p)))
 }
+
+func TestRotationAroundTheZAxis(t *testing.T) {
+	// Given
+	p := tuple.Point(0, 1, 0)
+	halfQuarter := matrix.Identity(4).RotateZ(math.Pi / 4)
+	fullQuarter := matrix.Identity(4).RotateZ(math.Pi / 2)
+
+	// Then
+	assert.True(t, tuple.Point(-math.Sqrt(2)/2, math.Sqrt(2)/2, 0).Equals(halfQuarter.Transform(p)))
+	assert.True(t, tuple.Point(-1, 0, 0).Equals(fullQuarter.Transform(p)))
+}
