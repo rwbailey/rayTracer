@@ -1,6 +1,7 @@
 package matrix_test
 
 import (
+	"math"
 	"testing"
 
 	"github.com/rwbailey/ray/matrix"
@@ -412,4 +413,15 @@ func TestReflectionIsScalingByANegativeValue(t *testing.T) {
 
 	// Then
 	assert.True(t, tuple.Vector(-2, 3, 4).Equals(scale.MultiplyTuple(v)))
+}
+
+func TestRotatingAPointAroundTheXAxis(t *testing.T) {
+	// Given
+	p := tuple.Point(0, 1, 0)
+	halfQuarter := matrix.Identity(4).RotateX(math.Pi / 4)
+	fullQuarter := matrix.Identity(4).RotateX(math.Pi / 2)
+
+	// Then
+	assert.True(t, tuple.Point(0, math.Sqrt(2)/2, math.Sqrt(2)/2).Equals(halfQuarter.Transform(p)))
+	assert.True(t, tuple.Point(0, 0, 1).Equals(fullQuarter.Transform(p)))
 }

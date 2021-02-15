@@ -2,6 +2,7 @@ package matrix
 
 import (
 	"errors"
+	"math"
 
 	"github.com/rwbailey/ray/helpers"
 	"github.com/rwbailey/ray/tuple"
@@ -147,6 +148,16 @@ func (m Matrix) Inverse() (Matrix, error) {
 /**
  *	Transformations
  */
+func (m Matrix) Transform(t tuple.Tuple) tuple.Tuple {
+	mt := tuple.New(0, 0, 0, 0)
+
+	mt.X = m[0][0]*t.X + m[0][1]*t.Y + m[0][2]*t.Z + m[0][3]*t.W
+	mt.Y = m[1][0]*t.X + m[1][1]*t.Y + m[1][2]*t.Z + m[1][3]*t.W
+	mt.Z = m[2][0]*t.X + m[2][1]*t.Y + m[2][2]*t.Z + m[2][3]*t.W
+	mt.W = m[3][0]*t.X + m[3][1]*t.Y + m[3][2]*t.Z + m[3][3]*t.W
+
+	return mt
+}
 
 func (m Matrix) Translate(x, y, z float64) Matrix {
 	t := Identity(4)
@@ -162,4 +173,13 @@ func (m Matrix) Scale(x, y, z float64) Matrix {
 	s[1][1] = y
 	s[2][2] = z
 	return s.MultiplyMatrix(m)
+}
+
+func (m Matrix) RotateX(r float64) Matrix {
+	a := Identity(4)
+	a[1][1] = math.Cos(r)
+	a[1][2] = -math.Sin(r)
+	a[2][1] = math.Sin(r)
+	a[2][2] = math.Cos(r)
+	return a.MultiplyMatrix(m)
 }
