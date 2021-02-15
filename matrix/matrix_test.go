@@ -457,3 +457,109 @@ func TestRotationAroundTheZAxis(t *testing.T) {
 	assert.True(t, tuple.Point(-math.Sqrt(2)/2, math.Sqrt(2)/2, 0).Equals(halfQuarter.Transform(p)))
 	assert.True(t, tuple.Point(-1, 0, 0).Equals(fullQuarter.Transform(p)))
 }
+
+func TestShearingXInProportionToY(t *testing.T) {
+	// Give
+	sh := matrix.Identity(4).Shear(1, 0, 0, 0, 0, 0)
+	p := tuple.Point(2, 3, 4)
+
+	// Then
+	assert.True(t, tuple.Point(5, 3, 4).Equals(sh.Transform(p)))
+}
+
+func TestShearingXInProportionToZ(t *testing.T) {
+	// Give
+	sh := matrix.Identity(4).Shear(0, 1, 0, 0, 0, 0)
+	p := tuple.Point(2, 3, 4)
+
+	// Then
+	assert.True(t, tuple.Point(6, 3, 4).Equals(sh.Transform(p)))
+}
+
+func TestShearingYInProportionToX(t *testing.T) {
+	// Give
+	sh := matrix.Identity(4).Shear(0, 0, 1, 0, 0, 0)
+	p := tuple.Point(2, 3, 4)
+
+	// Then
+	assert.True(t, tuple.Point(2, 5, 4).Equals(sh.Transform(p)))
+}
+
+func TestShearingYInProportionToZ(t *testing.T) {
+	// Give
+	sh := matrix.Identity(4).Shear(0, 0, 0, 1, 0, 0)
+	p := tuple.Point(2, 3, 4)
+
+	// Then
+	assert.True(t, tuple.Point(2, 7, 4).Equals(sh.Transform(p)))
+}
+
+func TestShearingZInProportionToX(t *testing.T) {
+	// Give
+	sh := matrix.Identity(4).Shear(0, 0, 0, 0, 1, 0)
+	p := tuple.Point(2, 3, 4)
+
+	// Then
+	assert.True(t, tuple.Point(2, 3, 6).Equals(sh.Transform(p)))
+}
+
+func TestShearingZInProportionToY(t *testing.T) {
+	// Give
+	sh := matrix.Identity(4).Shear(0, 0, 0, 0, 0, 1)
+	p := tuple.Point(2, 3, 4)
+
+	// Then
+	assert.True(t, tuple.Point(2, 3, 7).Equals(sh.Transform(p)))
+}
+
+func TestTransformationsAreAppliedInSequence(t *testing.T) {
+	// Given
+	p := tuple.Point(1, 0, 1)
+
+	A := matrix.Identity(4).RotateX(math.Pi / 2)
+	B := matrix.Identity(4).Scale(5, 5, 5)
+	C := matrix.Identity(4).Translate(10, 5, 7)
+
+	// Apply rotation
+	// When
+	p2 := A.Transform(p)
+	// Then
+	assert.True(t, tuple.Point(1, -1, 0).Equals(p2))
+
+	// Apply scaling
+	// When
+	p3 := B.Transform(p2)
+	// Then
+	assert.True(t, tuple.Point(5, -5, 0).Equals(p3))
+
+	// Apply translation
+	// When
+	p4 := C.Transform(p3)
+	// Then
+	assert.True(t, tuple.Point(15, 0, 7).Equals(p4))
+}
+
+func TestTransformationsMustBeAppliedInReverseOrder(t *testing.T) {
+	// Given
+	p := tuple.Point(1, 0, 1)
+
+	A := matrix.Identity(4).RotateX(math.Pi / 2)
+	B := matrix.Identity(4).Scale(5, 5, 5)
+	C := matrix.Identity(4).Translate(10, 5, 7)
+
+	// When
+	T := C.MultiplyMatrix(B).MultiplyMatrix(A)
+	// Then
+	assert.True(t, tuple.Point(15, 0, 7).Equals(T.Transform(p)))
+}
+
+func TestTransformationFluentAPI(t *testing.T) {
+	// Given
+	p := tuple.Point(1, 0, 1)
+
+	// When
+	tp := matrix.Identity(4).RotateX(math.Pi/2).Scale(5, 5, 5).Translate(10, 5, 7).Transform(p)
+
+	// Then
+	assert.True(t, tuple.Point(15, 0, 7).Equals(tp))
+}

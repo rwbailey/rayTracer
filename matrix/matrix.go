@@ -148,6 +148,8 @@ func (m Matrix) Inverse() (Matrix, error) {
 /**
  *	Transformations
  */
+
+// Does the same as MultiplyTuple
 func (m Matrix) Transform(t tuple.Tuple) tuple.Tuple {
 	mt := tuple.New(0, 0, 0, 0)
 
@@ -199,5 +201,16 @@ func (m Matrix) RotateZ(r float64) Matrix {
 	a[0][1] = -math.Sin(r)
 	a[1][0] = math.Sin(r)
 	a[1][1] = math.Cos(r)
+	return a.MultiplyMatrix(m)
+}
+
+func (m Matrix) Shear(xy, xz, yx, yz, zx, zy float64) Matrix {
+	a := Identity(4)
+	a[0][1] = xy
+	a[0][2] = xz
+	a[1][0] = yx
+	a[1][2] = yz
+	a[2][0] = zx
+	a[2][1] = zy
 	return a.MultiplyMatrix(m)
 }
