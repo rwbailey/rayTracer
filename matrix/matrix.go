@@ -144,10 +144,22 @@ func (m Matrix) Inverse() (Matrix, error) {
 	return inv, nil
 }
 
+/**
+ *	Transformations
+ */
+
 func (m Matrix) Translate(x, y, z float64) Matrix {
 	t := Identity(4)
 	t[0][3] = x
 	t[1][3] = y
 	t[2][3] = z
 	return t.MultiplyMatrix(m)
+}
+
+func (m Matrix) Scale(x, y, z float64) Matrix {
+	s := Identity(4)
+	s[0][0] = x
+	s[1][1] = y
+	s[2][2] = z
+	return s.MultiplyMatrix(m)
 }

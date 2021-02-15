@@ -376,3 +376,40 @@ func TestTranslationDoesNotAffectVectors(t *testing.T) {
 	// Then
 	assert.True(t, v.Equals(trans.MultiplyTuple(v)))
 }
+
+func TestScalingMatrixAppliedToPoint(t *testing.T) {
+	// Given
+	scale := matrix.Identity(4).Scale(2, 3, 4)
+	p := tuple.Point(-4, 6, 8)
+
+	// Then
+	assert.True(t, tuple.Point(-8, 18, 32).Equals(scale.MultiplyTuple(p)))
+}
+
+func TestScalingMatrixAppliedToVector(t *testing.T) {
+	// Given
+	scale := matrix.Identity(4).Scale(2, 3, 4)
+	v := tuple.Vector(-4, 6, 8)
+
+	// Then
+	assert.True(t, tuple.Vector(-8, 18, 32).Equals(scale.MultiplyTuple(v)))
+}
+
+func TestMultiplyByInverseOfScalingMatrix(t *testing.T) {
+	// Given
+	scale := matrix.Identity(4).Scale(2, 3, 4)
+	v := tuple.Vector(-4, 6, 8)
+	inv, _ := scale.Inverse()
+
+	// Then
+	assert.True(t, tuple.Vector(-2, 2, 2).Equals(inv.MultiplyTuple(v)))
+}
+
+func TestReflectionIsScalingByANegativeValue(t *testing.T) {
+	// Given
+	scale := matrix.Identity(4).Scale(-1, 1, 1)
+	v := tuple.Vector(2, 3, 4)
+
+	// Then
+	assert.True(t, tuple.Vector(-2, 3, 4).Equals(scale.MultiplyTuple(v)))
+}
