@@ -20,3 +20,14 @@ func TestCreatingAndQueryingARay(t *testing.T) {
 	assert.EqualValues(t, origin, r.Origin)
 	assert.EqualValues(t, direction, r.Direction)
 }
+
+func TestComputingAPointFromADistance(t *testing.T) {
+	// Given
+	r := ray.New(tuple.Point(2, 3, 4), tuple.Vector(1, 0, 0))
+
+	// Then
+	assert.True(t, tuple.Point(2, 3, 4).Equals(r.Position(0)))
+	assert.True(t, tuple.Point(3, 3, 4).Equals(r.Position(1)))
+	assert.True(t, tuple.Point(1, 3, 4).Equals(r.Position(-1)))
+	assert.True(t, tuple.Point(4.5, 3, 4).Equals(r.Position(2.5)))
+}

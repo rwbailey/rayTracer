@@ -13,3 +13,7 @@ func New(origin, direction tuple.Tuple) Ray {
 		Direction: direction,
 	}
 }
+
+func (r *Ray) Position(t float64) tuple.Tuple {
+	return r.Origin.Add(r.Direction.Multiply(t))
+}
