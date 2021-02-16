@@ -543,9 +543,10 @@ func TestTransformationsMustBeAppliedInReverseOrder(t *testing.T) {
 	// Given
 	p := tuple.Point(1, 0, 1)
 
-	A := matrix.Identity(4).RotateX(math.Pi / 2)
-	B := matrix.Identity(4).Scale(5, 5, 5)
-	C := matrix.Identity(4).Translate(10, 5, 7)
+	I := matrix.Identity(4)
+	A := I.RotateX(math.Pi / 2)
+	B := I.Scale(5, 5, 5)
+	C := I.Translate(10, 5, 7)
 
 	// When
 	T := C.MultiplyMatrix(B).MultiplyMatrix(A)
