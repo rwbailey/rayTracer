@@ -83,7 +83,7 @@ func TestAnIntersectionEncapsulatesARayAndAnObject(t *testing.T) {
 	s := shape.NewSphere()
 
 	// When
-	i := intersection.Intersection{
+	i := &intersection.Intersection{
 		T:      3.5,
 		Object: s,
 	}
@@ -96,8 +96,8 @@ func TestAnIntersectionEncapsulatesARayAndAnObject(t *testing.T) {
 func TestAggregatingIntersections(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	i1 := intersection.Intersection{1, s}
-	i2 := intersection.Intersection{2, s}
+	i1 := &intersection.Intersection{1, s}
+	i2 := &intersection.Intersection{2, s}
 
 	// When
 	xs := intersection.Intersections(i1, i2)
@@ -120,4 +120,65 @@ func TestIntersectSetsObject(t *testing.T) {
 	assert.EqualValues(t, 2, len(xs))
 	assert.EqualValues(t, s, xs[0].Object)
 	assert.EqualValues(t, s, xs[1].Object)
+}
+
+func TestHitAllIntersectionsPositiveT(t *testing.T) {
+	// Given
+	s := shape.NewSphere()
+	i1 := &intersection.Intersection{1, s}
+	i2 := &intersection.Intersection{2, s}
+
+	xs := intersection.Intersections(i1, i2)
+
+	// When
+	i := intersection.Hit(xs)
+
+	// Then
+	assert.EqualValues(t, i1, i)
+}
+
+func TestHitWhenSomeIntersectionsHaveNegativeT(t *testing.T) {
+	// Given
+	s := shape.NewSphere()
+	i1 := &intersection.Intersection{-1, s}
+	i2 := &intersection.Intersection{1, s}
+	xs := intersection.Intersections(i2, i1)
+
+	// When
+	i := intersection.Hit(xs)
+
+	// Then
+	assert.EqualValues(t, i2, i)
+}
+
+func TestAllIntersectionsHaveNegativeT(t *testing.T) {
+	// Given
+	s := shape.NewSphere()
+	i1 := &intersection.Intersection{-2, s}
+	i2 := &intersection.Intersection{-1, s}
+	xs := intersection.Intersections(i2, i1)
+
+	// When
+	i := intersection.Hit(xs)
+
+	// Then
+	var in *intersection.Intersection
+	assert.EqualValues(t, in, i)
+	assert.True(t, in == nil)
+}
+
+func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
+	// Given
+	s := shape.NewSphere()
+	i1 := &intersection.Intersection{5, s}
+	i2 := &intersection.Intersection{7, s}
+	i3 := &intersection.Intersection{-3, s}
+	i4 := &intersection.Intersection{2, s}
+	xs := intersection.Intersections(i1, i2, i3, i4)
+
+	// When
+	i := intersection.Hit(xs)
+
+	// Then
+	assert.EqualValues(t, i4, i)
 }
