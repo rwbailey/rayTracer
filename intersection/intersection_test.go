@@ -20,8 +20,8 @@ func TestRaySphereIntersectionAtTwoPoints(t *testing.T) {
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
-	assert.EqualValues(t, 4.0, xs[0])
-	assert.EqualValues(t, 6.0, xs[1])
+	assert.EqualValues(t, 4.0, xs[0].T)
+	assert.EqualValues(t, 6.0, xs[1].T)
 }
 
 func TestRaySphereIntersectionAtTangent(t *testing.T) {
@@ -34,8 +34,8 @@ func TestRaySphereIntersectionAtTangent(t *testing.T) {
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
-	assert.EqualValues(t, 5.0, xs[0])
-	assert.EqualValues(t, 5.0, xs[1])
+	assert.EqualValues(t, 5.0, xs[0].T)
+	assert.EqualValues(t, 5.0, xs[1].T)
 }
 
 func TestRaySphereNoIntersection(t *testing.T) {
@@ -60,8 +60,8 @@ func TestRayOriginatesInsideSphere(t *testing.T) {
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
-	assert.EqualValues(t, -1.0, xs[0])
-	assert.EqualValues(t, 1.0, xs[1])
+	assert.EqualValues(t, -1.0, xs[0].T)
+	assert.EqualValues(t, 1.0, xs[1].T)
 }
 
 func TestSphereBehindRay(t *testing.T) {
@@ -74,8 +74,8 @@ func TestSphereBehindRay(t *testing.T) {
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
-	assert.EqualValues(t, -6.0, xs[0])
-	assert.EqualValues(t, -4.0, xs[1])
+	assert.EqualValues(t, -6.0, xs[0].T)
+	assert.EqualValues(t, -4.0, xs[1].T)
 }
 
 func TestAnIntersectionEncapsulatesARayAndAnObject(t *testing.T) {
@@ -101,6 +101,20 @@ func TestAggregatingIntersections(t *testing.T) {
 
 	// When
 	xs := intersection.Intersections(i1, i2)
+
+	// Then
+	assert.EqualValues(t, 2, len(xs))
+	assert.EqualValues(t, 1, xs[0].T)
+	assert.EqualValues(t, 2, xs[1].T)
+}
+
+func TestIntersectSetsObject(t *testing.T) {
+	// Given
+	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	s := shape.NewSphere()
+
+	// When
+	xs := intersection.Intersect(s, r)
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))

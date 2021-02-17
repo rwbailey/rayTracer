@@ -2,6 +2,7 @@ package intersection
 
 import (
 	"math"
+	"sort"
 
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/shape"
@@ -13,7 +14,7 @@ type Intersection struct {
 	Object shape.Shape
 }
 
-func Intersect(s shape.Shape, r ray.Ray) []float64 {
+func Intersect(s shape.Shape, r ray.Ray) []Intersection {
 	var t1 float64
 	var t2 float64
 
@@ -31,9 +32,19 @@ func Intersect(s shape.Shape, r ray.Ray) []float64 {
 		t1 = (-b - math.Sqrt(discriminant)) / (2 * a)
 		t2 = (-b + math.Sqrt(discriminant)) / (2 * a)
 	}
-	return []float64{t1, t2}
+	return []Intersection{
+		{
+			T:      t1,
+			Object: s,
+		},
+		{
+			T:      t2,
+			Object: s,
+		},
+	}
 }
 
 func Intersections(ints ...Intersection) []Intersection {
+	sort.Slice(ints, func(i, j int) bool { return ints[i].T < ints[j].T })
 	return ints
 }
