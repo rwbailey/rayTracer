@@ -19,17 +19,19 @@ func main() {
 	can := canvas.New(900, 600)
 	white = colour.New(1, 1, 1)
 
+	err := can.CanvasToPPM().Save("image.ppm")
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+func clock(can *canvas.Canvas) {
 	twelve := tuple.Point(0, 200, 0)
 
 	for i := 0; i < 12; i++ {
 		can.WritePixel(int(twelve.X)+450, int(twelve.Y)+300, white)
 		rotZ := matrix.Identity(4).RotateZ(math.Pi / 6)
 		twelve = rotZ.Transform(twelve)
-	}
-
-	err := can.CanvasToPPM().Save("image.ppm")
-	if err != nil {
-		fmt.Println(err)
 	}
 }
 
