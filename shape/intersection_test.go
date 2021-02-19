@@ -1,9 +1,8 @@
-package intersection_test
+package shape_test
 
 import (
 	"testing"
 
-	"github.com/rwbailey/ray/intersection"
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/shape"
 	"github.com/rwbailey/ray/tuple"
@@ -16,7 +15,7 @@ func TestRaySphereIntersectionAtTwoPoints(t *testing.T) {
 	s := shape.NewSphere()
 
 	// When
-	xs := intersection.Intersect(s, r)
+	xs := s.Intersect(r)
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
@@ -30,7 +29,7 @@ func TestRaySphereIntersectionAtTangent(t *testing.T) {
 	s := shape.NewSphere()
 
 	// When
-	xs := intersection.Intersect(s, r)
+	xs := s.Intersect(r)
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
@@ -44,7 +43,7 @@ func TestRaySphereNoIntersection(t *testing.T) {
 	s := shape.NewSphere()
 
 	// When
-	xs := intersection.Intersect(s, r)
+	xs := s.Intersect(r)
 
 	// Then
 	assert.EqualValues(t, 0, len(xs))
@@ -56,7 +55,7 @@ func TestRayOriginatesInsideSphere(t *testing.T) {
 	s := shape.NewSphere()
 
 	// When
-	xs := intersection.Intersect(s, r)
+	xs := s.Intersect(r)
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
@@ -70,7 +69,7 @@ func TestSphereBehindRay(t *testing.T) {
 	s := shape.NewSphere()
 
 	// When
-	xs := intersection.Intersect(s, r)
+	xs := s.Intersect(r)
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
@@ -83,7 +82,7 @@ func TestAnIntersectionEncapsulatesARayAndAnObject(t *testing.T) {
 	s := shape.NewSphere()
 
 	// When
-	i := &intersection.Intersection{
+	i := &shape.Intersection{
 		T:      3.5,
 		Object: s,
 	}
@@ -96,11 +95,11 @@ func TestAnIntersectionEncapsulatesARayAndAnObject(t *testing.T) {
 func TestAggregatingIntersections(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	i1 := &intersection.Intersection{1, s}
-	i2 := &intersection.Intersection{2, s}
+	i1 := &shape.Intersection{1, s}
+	i2 := &shape.Intersection{2, s}
 
 	// When
-	xs := intersection.Intersections(i1, i2)
+	xs := shape.Intersections(i1, i2)
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
@@ -114,7 +113,7 @@ func TestIntersectSetsObject(t *testing.T) {
 	s := shape.NewSphere()
 
 	// When
-	xs := intersection.Intersect(s, r)
+	xs := s.Intersect(r)
 
 	// Then
 	assert.EqualValues(t, 2, len(xs))
@@ -125,13 +124,13 @@ func TestIntersectSetsObject(t *testing.T) {
 func TestHitAllIntersectionsPositiveT(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	i1 := &intersection.Intersection{1, s}
-	i2 := &intersection.Intersection{2, s}
+	i1 := &shape.Intersection{1, s}
+	i2 := &shape.Intersection{2, s}
 
-	xs := intersection.Intersections(i1, i2)
+	xs := shape.Intersections(i1, i2)
 
 	// When
-	i := intersection.Hit(xs)
+	i := shape.Hit(xs)
 
 	// Then
 	assert.EqualValues(t, i1, i)
@@ -140,12 +139,12 @@ func TestHitAllIntersectionsPositiveT(t *testing.T) {
 func TestHitWhenSomeIntersectionsHaveNegativeT(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	i1 := &intersection.Intersection{-1, s}
-	i2 := &intersection.Intersection{1, s}
-	xs := intersection.Intersections(i2, i1)
+	i1 := &shape.Intersection{-1, s}
+	i2 := &shape.Intersection{1, s}
+	xs := shape.Intersections(i2, i1)
 
 	// When
-	i := intersection.Hit(xs)
+	i := shape.Hit(xs)
 
 	// Then
 	assert.EqualValues(t, i2, i)
@@ -154,15 +153,15 @@ func TestHitWhenSomeIntersectionsHaveNegativeT(t *testing.T) {
 func TestAllIntersectionsHaveNegativeT(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	i1 := &intersection.Intersection{-2, s}
-	i2 := &intersection.Intersection{-1, s}
-	xs := intersection.Intersections(i2, i1)
+	i1 := &shape.Intersection{-2, s}
+	i2 := &shape.Intersection{-1, s}
+	xs := shape.Intersections(i2, i1)
 
 	// When
-	i := intersection.Hit(xs)
+	i := shape.Hit(xs)
 
 	// Then
-	var in *intersection.Intersection
+	var in *shape.Intersection
 	assert.EqualValues(t, in, i)
 	assert.True(t, in == nil)
 }
@@ -170,14 +169,14 @@ func TestAllIntersectionsHaveNegativeT(t *testing.T) {
 func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	i1 := &intersection.Intersection{5, s}
-	i2 := &intersection.Intersection{7, s}
-	i3 := &intersection.Intersection{-3, s}
-	i4 := &intersection.Intersection{2, s}
-	xs := intersection.Intersections(i1, i2, i3, i4)
+	i1 := &shape.Intersection{5, s}
+	i2 := &shape.Intersection{7, s}
+	i3 := &shape.Intersection{-3, s}
+	i4 := &shape.Intersection{2, s}
+	xs := shape.Intersections(i1, i2, i3, i4)
 
 	// When
-	i := intersection.Hit(xs)
+	i := shape.Hit(xs)
 
 	// Then
 	assert.EqualValues(t, i4, i)
