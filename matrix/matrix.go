@@ -161,50 +161,70 @@ func (m Matrix) Transform(t tuple.Tuple) tuple.Tuple {
 	return mt
 }
 
-func (m Matrix) Translate(x, y, z float64) Matrix {
+func Translation(x, y, z float64) Matrix {
 	t := Identity(4)
 	t[0][3] = x
 	t[1][3] = y
 	t[2][3] = z
-	return t.MultiplyMatrix(m)
+	return t
 }
 
-func (m Matrix) Scale(x, y, z float64) Matrix {
+func (m Matrix) Translate(x, y, z float64) Matrix {
+	return Translation(x, y, z).MultiplyMatrix(m)
+}
+
+func Scaling(x, y, z float64) Matrix {
 	s := Identity(4)
 	s[0][0] = x
 	s[1][1] = y
 	s[2][2] = z
-	return s.MultiplyMatrix(m)
+	return s
 }
 
-func (m Matrix) RotateX(r float64) Matrix {
+func (m Matrix) Scale(x, y, z float64) Matrix {
+	return Scaling(x, y, z).MultiplyMatrix(m)
+}
+
+func RotationX(r float64) Matrix {
 	a := Identity(4)
 	a[1][1] = math.Cos(r)
 	a[1][2] = -math.Sin(r)
 	a[2][1] = math.Sin(r)
 	a[2][2] = math.Cos(r)
-	return a.MultiplyMatrix(m)
+	return a
 }
 
-func (m Matrix) RotateY(r float64) Matrix {
+func (m Matrix) RotateX(r float64) Matrix {
+	return RotationX(r).MultiplyMatrix(m)
+}
+
+func RotationY(r float64) Matrix {
 	a := Identity(4)
 	a[0][0] = math.Cos(r)
 	a[0][2] = math.Sin(r)
 	a[2][0] = -math.Sin(r)
 	a[2][2] = math.Cos(r)
-	return a.MultiplyMatrix(m)
+	return a
 }
 
-func (m Matrix) RotateZ(r float64) Matrix {
+func (m Matrix) RotateY(r float64) Matrix {
+	return RotationY(r).MultiplyMatrix(m)
+}
+
+func RotationZ(r float64) Matrix {
 	a := Identity(4)
 	a[0][0] = math.Cos(r)
 	a[0][1] = -math.Sin(r)
 	a[1][0] = math.Sin(r)
 	a[1][1] = math.Cos(r)
-	return a.MultiplyMatrix(m)
+	return a
 }
 
-func (m Matrix) Shear(xy, xz, yx, yz, zx, zy float64) Matrix {
+func (m Matrix) RotateZ(r float64) Matrix {
+	return RotationZ(r).MultiplyMatrix(m)
+}
+
+func Shearing(xy, xz, yx, yz, zx, zy float64) Matrix {
 	a := Identity(4)
 	a[0][1] = xy
 	a[0][2] = xz
@@ -212,5 +232,9 @@ func (m Matrix) Shear(xy, xz, yx, yz, zx, zy float64) Matrix {
 	a[1][2] = yz
 	a[2][0] = zx
 	a[2][1] = zy
-	return a.MultiplyMatrix(m)
+	return a
+}
+
+func (m Matrix) Shear(xy, xz, yx, yz, zx, zy float64) Matrix {
+	return Shearing(xy, xz, yx, yz, zx, zy).MultiplyMatrix(m)
 }

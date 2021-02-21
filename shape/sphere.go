@@ -3,14 +3,19 @@ package shape
 import (
 	"math"
 
+	"github.com/rwbailey/ray/matrix"
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/tuple"
 )
 
-type Sphere struct{}
+type Sphere struct {
+	Transform matrix.Matrix
+}
 
 func NewSphere() *Sphere {
-	return &Sphere{}
+	return &Sphere{
+		Transform: matrix.Identity(4),
+	}
 }
 
 func (s *Sphere) Intersect(r ray.Ray) []*Intersection {
@@ -39,4 +44,8 @@ func (s *Sphere) Intersect(r ray.Ray) []*Intersection {
 			Object: s,
 		},
 	}
+}
+
+func (s *Sphere) SetTransform(m matrix.Matrix) {
+	s.Transform = m
 }

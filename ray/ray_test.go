@@ -31,3 +31,13 @@ func TestComputingAPointFromADistance(t *testing.T) {
 	assert.True(t, tuple.Point(1, 3, 4).Equals(r.Position(-1)))
 	assert.True(t, tuple.Point(4.5, 3, 4).Equals(r.Position(2.5)))
 }
+
+// func TestTranslatingARay(t *testing.T) {
+// 	// Given
+// 	r := ray.New(tuple.Point(1, 2, 3), tuple.Vector(0, 1, 0))
+// 	m := matrix.Translation(3, 4, 5)
+
+// 	// When
+
+// 	// Then
+// }
