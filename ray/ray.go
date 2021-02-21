@@ -1,6 +1,7 @@
 package ray
 
 import (
+	"github.com/rwbailey/ray/matrix"
 	"github.com/rwbailey/ray/tuple"
 )
 
@@ -18,4 +19,11 @@ func New(origin, direction tuple.Tuple) Ray {
 
 func (r Ray) Position(t float64) tuple.Tuple {
 	return r.Origin.Add(r.Direction.Multiply(t))
+}
+
+func (r Ray) Transform(m matrix.Matrix) Ray {
+	return Ray{
+		Origin:    m.Transform(r.Origin),
+		Direction: m.Transform(r.Direction),
+	}
 }

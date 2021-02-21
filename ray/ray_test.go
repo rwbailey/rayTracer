@@ -3,6 +3,7 @@ package ray_test
 import (
 	"testing"
 
+	"github.com/rwbailey/ray/matrix"
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/tuple"
 	"github.com/stretchr/testify/assert"
@@ -32,12 +33,28 @@ func TestComputingAPointFromADistance(t *testing.T) {
 	assert.True(t, tuple.Point(4.5, 3, 4).Equals(r.Position(2.5)))
 }
 
-// func TestTranslatingARay(t *testing.T) {
-// 	// Given
-// 	r := ray.New(tuple.Point(1, 2, 3), tuple.Vector(0, 1, 0))
-// 	m := matrix.Translation(3, 4, 5)
+func TestTranslatingARay(t *testing.T) {
+	// Given
+	r := ray.New(tuple.Point(1, 2, 3), tuple.Vector(0, 1, 0))
+	m := matrix.Translation(3, 4, 5)
 
-// 	// When
+	// When
+	r2 := r.Transform(m)
 
-// 	// Then
-// }
+	// Then
+	assert.EqualValues(t, tuple.Point(4, 6, 8), r2.Origin)
+	assert.EqualValues(t, tuple.Vector(0, 1, 0), r2.Direction)
+}
+
+func TestScalingARay(t *testing.T) {
+	// Given
+	r := ray.New(tuple.Point(1, 2, 3), tuple.Vector(0, 1, 0))
+	m := matrix.Scaling(2, 3, 4)
+
+	// When
+	r2 := r.Transform(m)
+
+	// Then
+	assert.EqualValues(t, tuple.Point(2, 6, 12), r2.Origin)
+	assert.EqualValues(t, tuple.Vector(0, 3, 0), r2.Direction)
+}
