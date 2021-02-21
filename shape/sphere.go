@@ -1,6 +1,7 @@
 package shape
 
 import (
+	"log"
 	"math"
 
 	"github.com/rwbailey/ray/matrix"
@@ -19,12 +20,20 @@ func NewSphere() *Sphere {
 }
 
 func (s *Sphere) Intersect(r ray.Ray) []*Intersection {
+
+	inverseTransform, err := s.Transform.Inverse()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	rt := r.Transform(inverseTransform)
+
 	var t1 float64
 	var t2 float64
 
-	sphereToRay := r.Origin.Subtract(tuple.Point(0, 0, 0))
-	a := r.Direction.Dot(r.Direction)
-	b := 2 * r.Direction.Dot(sphereToRay)
+	sphereToRay := rt.Origin.Subtract(tuple.Point(0, 0, 0))
+	a := rt.Direction.Dot(rt.Direction)
+	b := 2 * rt.Direction.Dot(sphereToRay)
 	c := sphereToRay.Dot(sphereToRay) - 1
 
 	discriminant := b*b - (4 * a * c)
