@@ -58,3 +58,16 @@ func (s *Sphere) Intersect(r ray.Ray) []*Intersection {
 func (s *Sphere) SetTransform(m matrix.Matrix) {
 	s.Transform = m
 }
+
+func (s *Sphere) NormalAt(worldPoint tuple.Tuple) tuple.Tuple {
+	itm, _ := s.Transform.Inverse()
+	objPoint := itm.Transform(worldPoint)
+
+	objNormal := objPoint.Subtract(tuple.Point(0, 0, 0))
+
+	worldNormal := itm.Transpose().Transform(objNormal)
+
+	worldNormal.W = 0.0
+
+	return worldNormal.Normalise()
+}
