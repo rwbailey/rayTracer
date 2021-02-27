@@ -106,3 +106,7 @@ func (a Tuple) Cross(b Tuple) Tuple {
 		a.X*b.Y-a.Y*b.X,
 	)
 }
+
+func (v Tuple) Reflect(n Tuple) Tuple {
+	return v.Subtract(n.Multiply(2 * v.Dot(n)))
+}

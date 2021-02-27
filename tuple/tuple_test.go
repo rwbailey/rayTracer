@@ -6,6 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"github.com/rwbailey/ray/tuple"
 	. "github.com/rwbailey/ray/tuple"
 )
 
@@ -169,4 +170,28 @@ func TestCrossProduct(t *testing.T) {
 	// Then
 	assert.EqualValues(t, Vector(-1, 2, -1), a.Cross(b))
 	assert.EqualValues(t, Vector(1, -2, 1), b.Cross(a))
+}
+
+func TestReflectAVectorApproachingAt45(t *testing.T) {
+	// Given
+	v := tuple.Vector(1, -1, 0)
+	n := tuple.Vector(0, 1, 0)
+
+	// When
+	r := v.Reflect(n)
+
+	// Then
+	assert.True(t, r.Equals(tuple.Vector(1, 1, 0)))
+}
+
+func TestReflectingAVectorOffASlantedSurface(t *testing.T) {
+	// Given
+	v := tuple.Vector(0, -1, 0)
+	n := tuple.Vector(math.Sqrt(2)/2, math.Sqrt(2)/2, 0)
+
+	// When
+	r := v.Reflect(n)
+
+	// Then
+	assert.True(t, r.Equals(tuple.Vector(1, 0, 0)))
 }
