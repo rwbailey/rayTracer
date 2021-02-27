@@ -4,6 +4,7 @@ import (
 	"log"
 	"math"
 
+	"github.com/rwbailey/ray/material"
 	"github.com/rwbailey/ray/matrix"
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/tuple"
@@ -11,11 +12,13 @@ import (
 
 type Sphere struct {
 	Transform matrix.Matrix
+	Material  *material.Material
 }
 
 func NewSphere() *Sphere {
 	return &Sphere{
 		Transform: matrix.Identity(4),
+		Material:  material.New(),
 	}
 }
 

@@ -4,6 +4,7 @@ import (
 	"math"
 	"testing"
 
+	"github.com/rwbailey/ray/material"
 	"github.com/rwbailey/ray/matrix"
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/shape"
@@ -124,4 +125,25 @@ func TestNormalOnATransformedSphere(t *testing.T) {
 	n := s.NormalAt(tuple.Point(0, math.Sqrt(2)/2, -math.Sqrt(2)/2))
 	// Then
 	assert.True(t, n.Equals(tuple.Vector(0, 0.97014, -0.24254)))
+}
+
+func TestASphereHasADefaultMaterial(t *testing.T) {
+	// Given
+	s := shape.NewSphere()
+
+	// Then
+	assert.EqualValues(t, material.New(), s.Material)
+}
+
+func TestASphereMayBeAssignedAMaterial(t *testing.T) {
+	// Given
+	s := shape.NewSphere()
+	m := material.New()
+	m.Ambient = 1
+
+	// When
+	s.Material = m
+
+	// Then
+	assert.EqualValues(t, m, s.Material)
 }
