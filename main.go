@@ -6,6 +6,7 @@ import (
 
 	"github.com/rwbailey/ray/canvas"
 	"github.com/rwbailey/ray/colour"
+	"github.com/rwbailey/ray/light"
 	"github.com/rwbailey/ray/matrix"
 	p "github.com/rwbailey/ray/projectile"
 	"github.com/rwbailey/ray/ray"
@@ -37,10 +38,14 @@ func circle(can *canvas.Canvas) {
 	pixelSize := wallSize / float64(canvasPixels)
 	half := wallSize / 2
 
+	lightPosition := tuple.Point(-10, 10, -10)
+	lightColour := colour.New(1, 1, 1)
+	pointLight := light.NewPointLight(lightPosition, lightColour)
+
 	can.Width = canvasPixels
 	can.Height = canvasPixels
-	colour := colour.New(1, 0, 0)
 	s := shape.NewSphere()
+	s.Material.Colour = colour.New(1, 0.2, 1)
 
 	for y := 0; y < canvasPixels; y++ {
 		worldY := half - pixelSize*float64(y)
@@ -50,10 +55,15 @@ func circle(can *canvas.Canvas) {
 			position := tuple.Point(worldX, worldY, wallZ)
 
 			r := ray.New(rayOrigin, position.Subtract(rayOrigin).Normalise())
+			r.Direction = r.Direction.Normalise()
 			xs := s.Intersect(r)
 
-			if shape.Hit(xs) != nil {
-				can.WritePixel(x, y, colour)
+			if hit := shape.Hit(xs); hit != nil {
+				point := r.Position(hit.T)
+				normal := hit.Object.NormalAt(point)
+				eye := r.Direction.Negate()
+				c := s.Material.Lighting(pointLight, point, eye, normal)
+				can.WritePixel(x, y, c)
 			}
 		}
 	}

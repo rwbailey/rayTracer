@@ -1,7 +1,6 @@
 package material
 
 import (
-	"fmt"
 	"math"
 
 	"github.com/rwbailey/ray/colour"
@@ -65,9 +64,5 @@ func (m *Material) Lighting(light *light.PointLight, point, eyev, normalv tuple.
 			specular = light.Intensity.Multiply(m.Specular * factor)
 		}
 	}
-
-	fmt.Println(ambient)
-	fmt.Println(diffuse)
-	fmt.Println(specular)
 	return ambient.Add(diffuse).Add(specular)
 }
