@@ -4,6 +4,7 @@ import (
 	"github.com/rwbailey/ray/colour"
 	"github.com/rwbailey/ray/light"
 	"github.com/rwbailey/ray/matrix"
+	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/shape"
 	"github.com/rwbailey/ray/tuple"
 )
@@ -41,4 +42,13 @@ func Default() *World {
 	}
 
 	return w
+}
+
+func (w *World) IntersectWorld(r ray.Ray) []*shape.Intersection {
+	xs := make([]*shape.Intersection, 0, len(w.Objects))
+	for _, s := range w.Objects {
+		xs = append(xs, s.Intersect(r)...)
+	}
+
+	return shape.Intersections(xs...)
 }

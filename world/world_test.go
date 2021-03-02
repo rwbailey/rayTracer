@@ -6,6 +6,7 @@ import (
 	"github.com/rwbailey/ray/colour"
 	"github.com/rwbailey/ray/light"
 	"github.com/rwbailey/ray/matrix"
+	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/shape"
 	"github.com/rwbailey/ray/tuple"
 	"github.com/rwbailey/ray/world"
@@ -43,4 +44,20 @@ func TestCreateDefaultWorld(t *testing.T) {
 	assert.EqualValues(t, w.Light, ls)
 	assert.Contains(t, w.Objects, s1)
 	assert.Contains(t, w.Objects, s2)
+}
+
+func TestIntersectWorld(t *testing.T) {
+	// Given
+	w := world.Default()
+	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+
+	// When
+	xs := w.IntersectWorld(r)
+
+	// Then
+	assert.EqualValues(t, 4, len(xs))
+	assert.EqualValues(t, 4, xs[0].T)
+	assert.EqualValues(t, 4.5, xs[1].T)
+	assert.EqualValues(t, 5.5, xs[2].T)
+	assert.EqualValues(t, 6, xs[3].T)
 }
