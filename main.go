@@ -45,7 +45,11 @@ func circle(can *canvas.Canvas) {
 	can.Width = canvasPixels
 	can.Height = canvasPixels
 	s := shape.NewSphere()
-	s.Material.Colour = colour.New(1, 0.2, 1)
+	s.Material.Colour = colour.New(0, 0.2, 1)
+
+	T := matrix.Identity(4).Scale(1, 0.5, 1)
+
+	s.Transform = T
 
 	for y := 0; y < canvasPixels; y++ {
 		worldY := half - pixelSize*float64(y)
