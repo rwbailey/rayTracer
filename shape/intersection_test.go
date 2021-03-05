@@ -181,3 +181,20 @@ func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
 	// Then
 	assert.EqualValues(t, i4, i)
 }
+
+// func TestPrecomputingTheStateOfAnIntersection(t *testing.T) {
+// 	// Given
+// 	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+// 	s := shape.NewSphere()
+// 	i := shape.Intersection{4, s}
+
+// 	// When
+// 	comps := i.PrepareComputations(r)
+
+// 	// Then
+// 	assert.EqualValues(t, i.T, comps.T)
+// 	assert.EqualValues(t, i.Object, comps.Object)
+// 	assert.EqualValues(t, tuple.Point(0, 0, -1), comps.Point)
+// 	assert.EqualValues(t, tuple.Vector(0, 0, -1), comps.Eyev)
+// 	assert.EqualValues(t, tuple.Vector(0, 0, -1), comps.Normalv)
+// }

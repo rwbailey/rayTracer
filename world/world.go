@@ -33,9 +33,7 @@ func Default() *World {
 	s2.Transform = matrix.Scaling(0.5, 0.5, 0.5)
 
 	w := New()
-
 	w.Light = ls
-
 	w.Objects = []shape.Shape{
 		s1,
 		s2,
@@ -44,11 +42,12 @@ func Default() *World {
 	return w
 }
 
+// IntersectWorld iterates over all of the objects in the world, and returns
+// a sorted slice of the Intersections
 func (w *World) IntersectWorld(r ray.Ray) []*shape.Intersection {
 	xs := make([]*shape.Intersection, 0, len(w.Objects))
 	for _, s := range w.Objects {
 		xs = append(xs, s.Intersect(r)...)
 	}
-
 	return shape.Intersections(xs...)
 }
