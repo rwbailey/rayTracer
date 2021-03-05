@@ -2,11 +2,23 @@ package shape
 
 import (
 	"sort"
+
+	"github.com/rwbailey/ray/ray"
+	"github.com/rwbailey/ray/tuple"
 )
 
 type Intersection struct {
 	T      float64
 	Object Shape
+}
+
+type Computations struct {
+	T       float64
+	Object  Shape
+	Point   tuple.Tuple
+	Eyev    tuple.Tuple
+	Normalv tuple.Tuple
+	Inside  bool
 }
 
 func Intersections(ints ...*Intersection) []*Intersection {
@@ -22,4 +34,20 @@ func Hit(xs []*Intersection) *Intersection {
 		}
 	}
 	return nil
+}
+
+func (i *Intersection) PrepareComputations(r ray.Ray) *Computations {
+	c := Computations{}
+	c.T, c.Object = i.T, i.Object
+
+	c.Point = r.Position(c.T)
+	c.Eyev = r.Direction.Negate()
+	c.Normalv = c.Object.NormalAt(c.Point)
+
+	if c.Normalv.Dot(c.Eyev) < 0 {
+		c.Inside = true
+		c.Normalv = c.Normalv.Negate()
+	}
+
+	return &c
 }
