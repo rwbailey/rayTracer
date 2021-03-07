@@ -51,3 +51,14 @@ func (w *World) IntersectWorld(r ray.Ray) []*shape.Intersection {
 	}
 	return shape.Intersections(xs...)
 }
+
+// Given a set of pre computed values for an intersection, calculate the lighting/colour
+// at that point in the world.
+func (w *World) ShadeHit(c *shape.Computations) colour.Colour {
+	return c.Object.GetMaterial().Lighting(
+		w.Light,
+		c.Point,
+		c.Eyev,
+		c.Normalv,
+	)
+}

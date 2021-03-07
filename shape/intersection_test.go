@@ -227,5 +227,4 @@ func TestTheHitWhenTheIntersectionIsOnTheIntside(t *testing.T) {
 
 	assert.True(t, comps.Inside)
 	assert.EqualValues(t, tuple.Vector(0, 0, -1), comps.Normalv)
-
 }

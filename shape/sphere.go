@@ -22,6 +22,10 @@ func NewSphere() *Sphere {
 	}
 }
 
+func (s *Sphere) GetMaterial() *material.Material {
+	return s.Material
+}
+
 func (s *Sphere) Intersect(r ray.Ray) []*Intersection {
 
 	inverseTransform, err := s.Transform.Inverse()
@@ -60,6 +64,10 @@ func (s *Sphere) Intersect(r ray.Ray) []*Intersection {
 
 func (s *Sphere) SetTransform(m matrix.Matrix) {
 	s.Transform = m
+}
+
+func (s *Sphere) GetTransform() matrix.Matrix {
+	return s.Transform
 }
 
 func (s *Sphere) NormalAt(worldPoint tuple.Tuple) tuple.Tuple {

@@ -1,6 +1,7 @@
 package world_test
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/rwbailey/ray/colour"
@@ -60,4 +61,36 @@ func TestIntersectWorld(t *testing.T) {
 	assert.EqualValues(t, 4.5, xs[1].T)
 	assert.EqualValues(t, 5.5, xs[2].T)
 	assert.EqualValues(t, 6, xs[3].T)
+}
+
+func TestShadeAnIntersection(t *testing.T) {
+	// Given
+	w := world.Default()
+	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	s := w.Objects[0]
+	i := &shape.Intersection{4, s}
+
+	// When
+	comps := i.PrepareComputations(r)
+	c := w.ShadeHit(comps)
+	fmt.Println(c)
+	// Then
+	assert.True(t, colour.New(0.38066, 0.47583, 0.2855).Equals(c))
+}
+
+func TestShadeAnIntersectionFromTheInside(t *testing.T) {
+	// Given
+	w := world.Default()
+	w.Light = light.NewPointLight(tuple.Point(0, 0.25, 0), colour.New(1, 1, 1))
+	r := ray.New(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
+	s := w.Objects[1]
+	i := &shape.Intersection{0.5, s}
+
+	// When
+	comps := i.PrepareComputations(r)
+	c := w.ShadeHit(comps)
+	fmt.Println(c)
+
+	// Then
+	assert.True(t, colour.New(0.90498, 0.90498, 0.90498).Equals(c))
 }
