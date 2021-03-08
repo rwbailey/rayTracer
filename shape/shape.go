@@ -12,5 +12,6 @@ type Shape interface {
 	GetTransform() matrix.Matrix
 	Intersect(r ray.Ray) []*Intersection
 	NormalAt(worldPoint tuple.Tuple) tuple.Tuple
+	SetMaterial(m *material.Material)
 	SetTransform(m matrix.Matrix)
 }

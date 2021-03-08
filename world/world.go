@@ -62,3 +62,13 @@ func (w *World) ShadeHit(c *shape.Computations) colour.Colour {
 		c.Normalv,
 	)
 }
+
+func (w *World) ColourAt(r ray.Ray) colour.Colour {
+	xs := w.IntersectWorld(r)
+	hit := shape.Hit(xs)
+	if hit == nil {
+		return colour.New(0, 0, 0)
+	}
+	c := hit.PrepareComputations(r)
+	return w.ShadeHit(c)
+}

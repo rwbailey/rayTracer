@@ -22,6 +22,10 @@ func NewSphere() *Sphere {
 	}
 }
 
+func (s *Sphere) SetMaterial(m *material.Material) {
+	s.Material = m
+}
+
 func (s *Sphere) GetMaterial() *material.Material {
 	return s.Material
 }
