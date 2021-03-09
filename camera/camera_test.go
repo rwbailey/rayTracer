@@ -24,3 +24,19 @@ func TestConstructingACamera(t *testing.T) {
 	assert.EqualValues(t, math.Pi/2, c.FieldOfView)
 	assert.EqualValues(t, matrix.Identity(4), c.Transform)
 }
+
+func TestThePixelSizeForAHorizontalCanvas(t *testing.T) {
+	// Given
+	c := camera.New(200, 125, math.Pi/2)
+
+	// Then
+	assert.EqualValues(t, 0.01, c.PixelSize)
+}
+
+func TestThePixelSizeForAVerticalCanvas(t *testing.T) {
+	// Given
+	c := camera.New(125, 200, math.Pi/2)
+
+	// Then
+	assert.EqualValues(t, 0.01, c.PixelSize)
+}
