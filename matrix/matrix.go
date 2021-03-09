@@ -238,3 +238,17 @@ func Shearing(xy, xz, yx, yz, zx, zy float64) Matrix {
 func (m Matrix) Shear(xy, xz, yx, yz, zx, zy float64) Matrix {
 	return Shearing(xy, xz, yx, yz, zx, zy).MultiplyMatrix(m)
 }
+
+func ViewTransform(from, to, up tuple.Tuple) Matrix {
+	forward := to.Subtract(from).Normalise()
+	upn := up.Normalise()
+	left := forward.Cross(upn)
+	trueUp := left.Cross(forward)
+	orientation := New([][]float64{
+		{left.X, left.Y, left.Z, 0},
+		{trueUp.X, trueUp.Y, trueUp.Z, 0},
+		{-forward.X, -forward.Y, -forward.Z, 0},
+		{0, 0, 0, 1},
+	})
+	return orientation.MultiplyMatrix(Translation(-from.X, -from.Y, -from.Z))
+}
