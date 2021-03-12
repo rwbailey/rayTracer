@@ -1,7 +1,6 @@
 package matrix
 
 import (
-	"errors"
 	"math"
 
 	"github.com/rwbailey/ray/helpers"
@@ -129,9 +128,9 @@ func (m Matrix) IsInvertable() bool {
 	return m.Determinant() != 0
 }
 
-func (m Matrix) Inverse() (Matrix, error) {
+func (m Matrix) Inverse() Matrix {
 	if !m.IsInvertable() {
-		return nil, errors.New("The Matrix cannot be inverted (Det == 0)")
+		panic("The Matrix cannot be inverted (Det == 0)")
 	}
 	d := len(m)
 	inv := Zero(d)
@@ -142,7 +141,7 @@ func (m Matrix) Inverse() (Matrix, error) {
 			inv[col][row] = c / m.Determinant()
 		}
 	}
-	return inv, nil
+	return inv
 }
 
 /**

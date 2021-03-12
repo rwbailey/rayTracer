@@ -41,3 +41,20 @@ func (c *Camera) pixelSize(h, v, f float64) {
 	}
 	c.PixelSize = (c.HalfWidth * 2.0) / h
 }
+
+// func (c *Camera) RayForPixel(px, py float64) ray.Ray {
+// 	// The offset from the edge of te canvas to the pixel's centre
+// 	xOffset := (px + 0.5) * c.PixelSize
+// 	yOffset := (py + 0.5) * c.PixelSize
+
+// 	// The transformed coordinates of the pixel in world space
+// 	// (The camera looks towards -z, so +x is to the LEFT)
+// 	worldX := c.HalfWidth - xOffset
+// 	worldY := c.HalfHeight - yOffset
+
+// 	// Using the camera matrix, transform the canvas point and the origin,
+// 	// and then compute the ray's direction vector.
+// 	// (The canvas is at z=-1)
+// 	pixel := Must(c.Transform.Inverse()).MultiplyTuple(tuple.Point(worldX, worldY, -1))
+
+// }

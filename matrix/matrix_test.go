@@ -269,7 +269,7 @@ func TestMatrixInversion(t *testing.T) {
 		{7, 7, -6, -7},
 		{1, -3, 7, 4},
 	})
-	b, _ := a.Inverse()
+	b := a.Inverse()
 	B := matrix.New([][]float64{
 		{0.21805, 0.45113, 0.24060, -0.04511},
 		{-0.80827, -1.45677, -0.44361, 0.52068},
@@ -303,7 +303,7 @@ func TestMoreInversions(t *testing.T) {
 	})
 
 	// Then
-	iA, _ := A.Inverse()
+	iA := A.Inverse()
 	assert.True(t, iA.Equals(B))
 
 	// Given
@@ -321,7 +321,7 @@ func TestMoreInversions(t *testing.T) {
 	})
 
 	// Then
-	iC, _ := C.Inverse()
+	iC := C.Inverse()
 	assert.True(t, iC.Equals(D))
 }
 
@@ -343,10 +343,10 @@ func TestMultiplyMatrixProductByInverse(t *testing.T) {
 	D := B.MultiplyMatrix(A)
 
 	// Then
-	iB, _ := B.Inverse()
+	iB := B.Inverse()
 	assert.True(t, C.MultiplyMatrix(iB).Equals(A))
 
-	iA, _ := A.Inverse()
+	iA := A.Inverse()
 	assert.True(t, D.MultiplyMatrix(iA).Equals(B))
 }
 
@@ -362,7 +362,7 @@ func TestMultiplyByTransformationMatrix(t *testing.T) {
 func TestMultiplyByInverseOfTransformationMatrix(t *testing.T) {
 	// Given
 	trans := matrix.Identity(4).Translate(5, -3, 2)
-	inv, _ := trans.Inverse()
+	inv := trans.Inverse()
 	p := tuple.Point(-3, 4, 5)
 
 	// Then
@@ -400,7 +400,7 @@ func TestMultiplyByInverseOfScalingMatrix(t *testing.T) {
 	// Given
 	scale := matrix.Identity(4).Scale(2, 3, 4)
 	v := tuple.Vector(-4, 6, 8)
-	inv, _ := scale.Inverse()
+	inv := scale.Inverse()
 
 	// Then
 	assert.True(t, tuple.Vector(-2, 2, 2).Equals(inv.MultiplyTuple(v)))
@@ -430,7 +430,7 @@ func TestRotatingAPointAroundTheXAxisInverse(t *testing.T) {
 	// Given
 	p := tuple.Point(0, 1, 0)
 	halfQuarter := matrix.Identity(4).RotateX(math.Pi / 4)
-	inv, _ := halfQuarter.Inverse()
+	inv := halfQuarter.Inverse()
 
 	// Then
 	assert.True(t, tuple.Point(0, math.Sqrt(2)/2, -math.Sqrt(2)/2).Equals(inv.Transform(p)))

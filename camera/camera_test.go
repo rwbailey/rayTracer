@@ -40,3 +40,40 @@ func TestThePixelSizeForAVerticalCanvas(t *testing.T) {
 	// Then
 	assert.EqualValues(t, 0.01, c.PixelSize)
 }
+
+// func TestConstructingARayThroughTheCentreOfTheCanvas(t *testing.T) {
+// 	// Given
+// 	c := camera.New(201, 101, math.Pi/2)
+
+// 	// When
+// 	r := c.RayForPixel(100, 50)
+
+// 	// Then
+// 	assert.Equal(t, tuple.Point(0, 0, 0), r.Origin)
+// 	assert.True(t, tuple.Vector(0, 0, -1).Equals(r.Direction))
+// }
+
+// func TestConstructingARayThroughTheCornerOfTheCanvas(t *testing.T) {
+// 	// Given
+// 	c := camera.New(201, 101, math.Pi/2)
+
+// 	// When
+// 	r := c.RayForPixel(0, 0)
+
+// 	// Then
+// 	assert.Equal(t, tuple.Point(0, 0, 0), r.Origin)
+// 	assert.True(t, tuple.Vector(0.66519, 0.33259, -0.66851).Equals(r.Direction))
+// }
+
+// func TestConstructingARayWhenTheCameraIsTransformed(t *testing.T) {
+// 	// Given
+// 	c := camera.New(201, 101, math.Pi/2)
+
+// 	// When
+// 	c.Transform = matrix.RotationY(math.Pi / 4).MultiplyMatrix(matrix.Translation(0, -2, 5))
+// 	r := c.RayForPixel(100, 50)
+
+// 	// Then
+// 	assert.Equal(t, tuple.Point(0, 2, -5), r.Origin)
+// 	assert.True(t, tuple.Vector(math.Sqrt(2)/2, 0, -math.Sqrt(2)/2).Equals(r.Direction))
+// }

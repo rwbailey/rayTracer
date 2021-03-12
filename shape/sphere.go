@@ -1,7 +1,6 @@
 package shape
 
 import (
-	"log"
 	"math"
 
 	"github.com/rwbailey/ray/material"
@@ -32,10 +31,7 @@ func (s *Sphere) GetMaterial() *material.Material {
 
 func (s *Sphere) Intersect(r ray.Ray) []*Intersection {
 
-	inverseTransform, err := s.Transform.Inverse()
-	if err != nil {
-		log.Fatal(err)
-	}
+	inverseTransform := s.Transform.Inverse()
 
 	rt := r.Transform(inverseTransform)
 
@@ -75,7 +71,7 @@ func (s *Sphere) GetTransform() matrix.Matrix {
 }
 
 func (s *Sphere) NormalAt(worldPoint tuple.Tuple) tuple.Tuple {
-	itm, _ := s.Transform.Inverse()
+	itm := s.Transform.Inverse()
 	objPoint := itm.Transform(worldPoint)
 
 	objNormal := objPoint.Subtract(tuple.Point(0, 0, 0))
