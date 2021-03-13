@@ -4,15 +4,18 @@ import (
 	"fmt"
 	"math"
 
+	"github.com/rwbailey/ray/camera"
 	"github.com/rwbailey/ray/canvas"
 	"github.com/rwbailey/ray/colour"
 	"github.com/rwbailey/ray/light"
+	"github.com/rwbailey/ray/material"
 	"github.com/rwbailey/ray/matrix"
 	p "github.com/rwbailey/ray/projectile"
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/shape"
 	"github.com/rwbailey/ray/tuple"
 	t "github.com/rwbailey/ray/tuple"
+	"github.com/rwbailey/ray/world"
 )
 
 var white colour.Colour
@@ -22,12 +25,60 @@ func main() {
 	can := canvas.New(900, 600)
 	white = colour.New(1, 1, 1)
 
-	circle(can)
+	can = scene()
 
 	err := can.CanvasToPPM().Save("image.ppm")
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func scene() *canvas.Canvas {
+	floor := shape.NewSphere()
+	floor.Transform = matrix.Scaling(10, 0.01, 10)
+	floor.Material = material.New()
+	floor.Material.Colour = colour.New(1, 0.9, 0.9)
+	floor.Material.Specular = 0
+
+	leftWall := shape.NewSphere()
+	leftWall.Transform = matrix.Translation(0, 0, 5).MultiplyMatrix(matrix.RotationY(-math.Pi / 4)).MultiplyMatrix(matrix.RotationX(math.Pi / 2)).MultiplyMatrix(matrix.Scaling(10, 0.01, 10))
+	leftWall.Material = floor.Material
+
+	rightWall := shape.NewSphere()
+	rightWall.Transform = matrix.Translation(0, 0, 5).MultiplyMatrix(matrix.RotationY(math.Pi / 4)).MultiplyMatrix(matrix.RotationX(math.Pi / 2)).MultiplyMatrix(matrix.Scaling(10, 0.01, 10))
+	rightWall.Material = floor.Material
+
+	middle := shape.NewSphere()
+	middle.Transform = matrix.Translation(-0.5, 1, 0.5)
+	middle.Material = material.New()
+	middle.Material.Colour = colour.New(0.1, 1, 0.5)
+	middle.Material.Diffuse = 0.7
+	middle.Material.Specular = 0.3
+
+	right := shape.NewSphere()
+	right.Transform = matrix.Translation(1.5, 0.5, -0.5).MultiplyMatrix(matrix.Scaling(0.5, 0.5, 0.5))
+	right.Material = material.New()
+	right.Material.Colour = colour.New(0.5, 1, 0.1)
+	right.Material.Diffuse = 0.7
+	right.Material.Specular = 0.3
+
+	left := shape.NewSphere()
+	left.Transform = matrix.Translation(-1.5, 0.33, -0.75).MultiplyMatrix(matrix.Scaling(0.33, 0.33, 0.33))
+	left.Material = material.New()
+	left.Material.Colour = colour.New(1, 0.8, 0.1)
+	left.Material.Diffuse = 0.7
+	left.Material.Specular = 0.3
+
+	w := world.New()
+	w.Light = light.NewPointLight(tuple.Point(-10, 10, -10), colour.New(1, 1, 1))
+	w.AddObjects(floor, leftWall, rightWall, middle, right, left)
+
+	c := camera.New(500, 250, math.Pi/3)
+	c.Transform = matrix.ViewTransform(tuple.Point(0, 1.5, -5), tuple.Point(0, 1, 0), tuple.Point(0, 1, 0))
+
+	img := c.Render(w)
+
+	return img
 }
 
 func circle(can *canvas.Canvas) {

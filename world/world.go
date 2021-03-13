@@ -42,6 +42,12 @@ func Default() *World {
 	return w
 }
 
+func (w *World) AddObjects(objects ...shape.Shape) {
+	for _, ob := range objects {
+		w.Objects = append(w.Objects, ob)
+	}
+}
+
 // IntersectWorld iterates over all of the objects in the world, and returns
 // a sorted slice of the Intersections
 func (w *World) IntersectWorld(r ray.Ray) []*shape.Intersection {
