@@ -26,7 +26,7 @@ func New() *Material {
 	}
 }
 
-func (m *Material) Lighting(light *light.PointLight, point, eyev, normalv tuple.Tuple) colour.Colour {
+func (m *Material) Lighting(light *light.PointLight, point, eyev, normalv tuple.Tuple, inShadow bool) colour.Colour {
 
 	var ambient colour.Colour
 	var diffuse colour.Colour
@@ -63,6 +63,9 @@ func (m *Material) Lighting(light *light.PointLight, point, eyev, normalv tuple.
 			factor := math.Pow(reflectDotEye, m.Shininess)
 			specular = light.Intensity.Multiply(m.Specular * factor)
 		}
+	}
+	if inShadow {
+		return ambient
 	}
 	return ambient.Add(diffuse).Add(specular)
 }

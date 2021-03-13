@@ -23,7 +23,7 @@ var white colour.Colour
 func main() {
 
 	can := canvas.New(900, 600)
-	white = colour.New(1, 1, 1)
+	white = colour.White
 
 	can = scene()
 
@@ -51,9 +51,10 @@ func scene() *canvas.Canvas {
 	middle := shape.NewSphere()
 	middle.Transform = matrix.Translation(-0.5, 1, 0.5)
 	middle.Material = material.New()
-	middle.Material.Colour = colour.New(0.1, 1, 0.5)
+	middle.Material.Colour = colour.New(0.1, 0, 1)
 	middle.Material.Diffuse = 0.7
 	middle.Material.Specular = 0.3
+	middle.Material.Shininess = 0
 
 	right := shape.NewSphere()
 	right.Transform = matrix.Translation(1.5, 0.5, -0.5).MultiplyMatrix(matrix.Scaling(0.5, 0.5, 0.5))
@@ -70,10 +71,10 @@ func scene() *canvas.Canvas {
 	left.Material.Specular = 0.3
 
 	w := world.New()
-	w.Light = light.NewPointLight(tuple.Point(-10, 10, -10), colour.New(1, 1, 1))
+	w.Light = light.NewPointLight(tuple.Point(-10, 10, -10), colour.White)
 	w.AddObjects(floor, leftWall, rightWall, middle, right, left)
 
-	c := camera.New(500, 250, math.Pi/3)
+	c := camera.New(800, 500, math.Pi/3)
 	c.Transform = matrix.ViewTransform(tuple.Point(0, 1.5, -5), tuple.Point(0, 1, 0), tuple.Point(0, 1, 0))
 
 	img := c.Render(w)

@@ -8,6 +8,15 @@ type Colour struct {
 	Blue  float64
 }
 
+var (
+	White, Black Colour
+)
+
+func init() {
+	White = New(1, 1, 1)
+	Black = New(0, 0, 0)
+}
+
 func New(r, g, b float64) Colour {
 	return Colour{
 		Red:   r,
