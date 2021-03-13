@@ -5,8 +5,10 @@ import (
 	"testing"
 
 	"github.com/rwbailey/ray/camera"
+	"github.com/rwbailey/ray/colour"
 	"github.com/rwbailey/ray/matrix"
 	"github.com/rwbailey/ray/tuple"
+	"github.com/rwbailey/ray/world"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -77,4 +79,20 @@ func TestConstructingARayWhenTheCameraIsTransformed(t *testing.T) {
 	// Then
 	assert.Equal(t, tuple.Point(0, 2, -5), r.Origin)
 	assert.True(t, tuple.Vector(math.Sqrt(2)/2, 0, -math.Sqrt(2)/2).Equals(r.Direction))
+}
+
+func TestRenderingAWorldWithACamera(t *testing.T) {
+	// Given
+	w := world.Default()
+	c := camera.New(11, 11, math.Pi/2)
+	from := tuple.Point(0, 0, -5)
+	to := tuple.Point(0, 0, 0)
+	up := tuple.Vector(0, 1, 0)
+	c.Transform = matrix.ViewTransform(from, to, up)
+
+	// When
+	img := c.Render(w)
+
+	// Then
+	assert.True(t, colour.New(0.38066, 0.47583, 0.2855).Equals(img.PixelAt(5, 5)))
 }

@@ -3,9 +3,11 @@ package camera
 import (
 	"math"
 
+	"github.com/rwbailey/ray/canvas"
 	"github.com/rwbailey/ray/matrix"
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/tuple"
+	"github.com/rwbailey/ray/world"
 )
 
 type Camera struct {
@@ -44,10 +46,10 @@ func (c *Camera) pixelSize(h, v, f float64) {
 	c.PixelSize = (c.HalfWidth * 2.0) / h
 }
 
-func (c *Camera) RayForPixel(px, py float64) ray.Ray {
+func (c *Camera) RayForPixel(px, py int) ray.Ray {
 	// The offset from the edge of te canvas to the pixel's centre
-	xOffset := (px + 0.5) * c.PixelSize
-	yOffset := (py + 0.5) * c.PixelSize
+	xOffset := (float64(px) + 0.5) * c.PixelSize
+	yOffset := (float64(py) + 0.5) * c.PixelSize
 
 	// The transformed coordinates of the pixel in world space
 	// (The camera looks towards -z, so +x is to the LEFT)
@@ -62,4 +64,17 @@ func (c *Camera) RayForPixel(px, py float64) ray.Ray {
 	direction := pixel.Subtract(origin).Normalise()
 
 	return ray.New(origin, direction)
+}
+
+func (c *Camera) Render(w *world.World) *canvas.Canvas {
+	img := canvas.New(int(c.HSize), int(c.VSize))
+
+	for y := 0; y < int(c.VSize); y++ {
+		for x := 0; x < int(c.HSize); x++ {
+			ray := c.RayForPixel(x, y)
+			colour := w.ColourAt(ray)
+			img.WritePixel(x, y, colour)
+		}
+	}
+	return img
 }
