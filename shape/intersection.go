@@ -3,6 +3,7 @@ package shape
 import (
 	"sort"
 
+	"github.com/rwbailey/ray/helpers"
 	"github.com/rwbailey/ray/ray"
 	"github.com/rwbailey/ray/tuple"
 )
@@ -13,12 +14,13 @@ type Intersection struct {
 }
 
 type Computations struct {
-	T       float64
-	Object  Shape
-	Point   tuple.Tuple
-	Eyev    tuple.Tuple
-	Normalv tuple.Tuple
-	Inside  bool
+	T         float64
+	Object    Shape
+	Point     tuple.Tuple
+	Eyev      tuple.Tuple
+	Normalv   tuple.Tuple
+	Inside    bool
+	OverPoint tuple.Tuple
 }
 
 func Intersections(ints ...*Intersection) []*Intersection {
@@ -48,6 +50,7 @@ func (i *Intersection) PrepareComputations(r ray.Ray) *Computations {
 		c.Inside = true
 		c.Normalv = c.Normalv.Negate()
 	}
+	c.OverPoint = c.Point.Add(c.Normalv.Multiply(helpers.Epsilon))
 
 	return &c
 }

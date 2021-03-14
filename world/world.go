@@ -66,6 +66,7 @@ func (w *World) ShadeHit(c *shape.Computations) colour.Colour {
 		c.Point,
 		c.Eyev,
 		c.Normalv,
+		w.IsShadowed(c.OverPoint),
 	)
 }
 
@@ -77,4 +78,18 @@ func (w *World) ColourAt(r ray.Ray) colour.Colour {
 	}
 	c := hit.PrepareComputations(r)
 	return w.ShadeHit(c)
+}
+
+func (w *World) IsShadowed(p tuple.Tuple) bool {
+	v := w.Light.Position.Subtract(p)
+
+	distance := v.Magnitude()
+	direction := v.Normalise()
+	r := ray.New(p, direction)
+	xs := w.IntersectWorld(r)
+	h := shape.Hit(xs)
+	if h != nil && h.T < distance {
+		return true
+	}
+	return false
 }

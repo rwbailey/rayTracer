@@ -54,7 +54,6 @@ func scene() *canvas.Canvas {
 	middle.Material.Colour = colour.New(0.1, 0, 1)
 	middle.Material.Diffuse = 0.7
 	middle.Material.Specular = 0.3
-	middle.Material.Shininess = 0
 
 	right := shape.NewSphere()
 	right.Transform = matrix.Translation(1.5, 0.5, -0.5).MultiplyMatrix(matrix.Scaling(0.5, 0.5, 0.5))
@@ -118,7 +117,7 @@ func circle(can *canvas.Canvas) {
 				point := r.Position(hit.T)
 				normal := hit.Object.NormalAt(point)
 				eye := r.Direction.Negate()
-				c := s.Material.Lighting(pointLight, point, eye, normal)
+				c := s.Material.Lighting(pointLight, point, eye, normal, false)
 				can.WritePixel(x, y, c)
 			}
 		}

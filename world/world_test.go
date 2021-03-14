@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/rwbailey/ray/colour"
+	"github.com/rwbailey/ray/helpers"
 	"github.com/rwbailey/ray/light"
 	"github.com/rwbailey/ray/matrix"
 	"github.com/rwbailey/ray/ray"
@@ -68,7 +69,7 @@ func TestShadeAnIntersection(t *testing.T) {
 	w := world.Default()
 	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 	s := w.Objects[0]
-	i := &shape.Intersection{4, s}
+	i := &shape.Intersection{T: 4, Object: s}
 
 	// When
 	comps := i.PrepareComputations(r)
@@ -84,7 +85,7 @@ func TestShadeAnIntersectionFromTheInside(t *testing.T) {
 	w.Light = light.NewPointLight(tuple.Point(0, 0.25, 0), colour.New(1, 1, 1))
 	r := ray.New(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
 	s := w.Objects[1]
-	i := &shape.Intersection{0.5, s}
+	i := &shape.Intersection{T: 0.5, Object: s}
 
 	// When
 	comps := i.PrepareComputations(r)
@@ -134,4 +135,75 @@ func TestTheColourWithAnIntersectionBehindTheRay(t *testing.T) {
 
 	// Then
 	assert.True(t, inner.GetMaterial().Colour.Equals(c))
+}
+
+func TestThereIsNoShadowWhenNothingIsColinearWithThePointAndLight(t *testing.T) {
+	// Given
+	w := world.Default()
+	p := tuple.Point(0, 10, 0)
+
+	// Then
+	assert.False(t, w.IsShadowed(p))
+}
+
+func TestTheShadowWhenAnObjectIsBetweenThePointAndTheLIght(t *testing.T) {
+	// Given
+	w := world.Default()
+	p := tuple.Point(10, -10, 10)
+
+	// Then
+	assert.True(t, w.IsShadowed(p))
+}
+
+func TestTheShadowWhenAnObjectIsBehindTheLight(t *testing.T) {
+	// Given
+	w := world.Default()
+	p := tuple.Point(-20, 20, -20)
+
+	// Then
+	assert.False(t, w.IsShadowed(p))
+}
+
+func TestTheShadowWhenAnObjectIsBehindThePoint(t *testing.T) {
+	// Given
+	w := world.Default()
+	p := tuple.Point(-2, 2, -2)
+
+	// Then
+	assert.False(t, w.IsShadowed(p))
+}
+
+func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
+	// Given
+	w := world.New()
+	w.Light = light.NewPointLight(tuple.Point(0, 0, -10), colour.White)
+	s1 := shape.NewSphere()
+	w.Objects = append(w.Objects, s1)
+	s2 := shape.NewSphere()
+	s2.Transform = matrix.Translation(0, 0, 10)
+	w.Objects = append(w.Objects, s2)
+	r := ray.New(tuple.Point(0, 0, 5), tuple.Vector(0, 0, 1))
+	i := &shape.Intersection{T: 4, Object: s2}
+
+	// When
+	comps := i.PrepareComputations(r)
+	c := w.ShadeHit(comps)
+
+	// Then
+	assert.True(t, colour.New(0.1, 0.1, 0.1).Equals(c))
+}
+
+func TestTheHitShouldOffsetThePoint(t *testing.T) {
+	// Given
+	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	s := shape.NewSphere()
+	s.Transform = matrix.Translation(0, 0, 1)
+	i := &shape.Intersection{T: 5, Object: s}
+
+	// When
+	comps := i.PrepareComputations(r)
+
+	// Then
+	assert.Less(t, comps.OverPoint.Z, -helpers.Epsilon/2)
+	assert.Greater(t, comps.Point.Z, comps.OverPoint.Z)
 }
