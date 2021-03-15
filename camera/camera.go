@@ -2,6 +2,7 @@ package camera
 
 import (
 	"math"
+	"sync"
 
 	"github.com/rwbailey/ray/canvas"
 	"github.com/rwbailey/ray/matrix"
@@ -69,12 +70,54 @@ func (c *Camera) RayForPixel(px, py int) ray.Ray {
 func (c *Camera) Render(w *world.World) *canvas.Canvas {
 	img := canvas.New(int(c.HSize), int(c.VSize))
 
-	for y := 0; y < int(c.VSize); y++ {
-		for x := 0; x < int(c.HSize); x++ {
-			ray := c.RayForPixel(x, y)
-			colour := w.ColourAt(ray)
-			img.WritePixel(x, y, colour)
+	var wg sync.WaitGroup
+	wg.Add(4)
+
+	go func() {
+		defer wg.Done()
+		for y := 0; y < int(c.VSize)/2; y++ {
+			for x := 0; x < int(c.HSize)/2; x++ {
+				ray := c.RayForPixel(x, y)
+				colour := w.ColourAt(ray)
+				img.WritePixel(x, y, colour)
+			}
 		}
-	}
+	}()
+
+	go func() {
+		defer wg.Done()
+		for y := int(c.VSize) / 2; y < int(c.VSize); y++ {
+			for x := 0; x < int(c.HSize)/2; x++ {
+				ray := c.RayForPixel(x, y)
+				colour := w.ColourAt(ray)
+				img.WritePixel(x, y, colour)
+			}
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		for y := 0; y < int(c.VSize)/2; y++ {
+			for x := int(c.HSize) / 2; x < int(c.HSize); x++ {
+				ray := c.RayForPixel(x, y)
+				colour := w.ColourAt(ray)
+				img.WritePixel(x, y, colour)
+			}
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		for y := int(c.VSize) / 2; y < int(c.VSize); y++ {
+			for x := int(c.HSize) / 2; x < int(c.HSize); x++ {
+				ray := c.RayForPixel(x, y)
+				colour := w.ColourAt(ray)
+				img.WritePixel(x, y, colour)
+			}
+		}
+	}()
+
+	wg.Wait()
+
 	return img
 }
