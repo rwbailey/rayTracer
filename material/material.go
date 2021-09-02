@@ -5,6 +5,7 @@ import (
 
 	"github.com/rwbailey/ray/colour"
 	"github.com/rwbailey/ray/light"
+	"github.com/rwbailey/ray/pattern"
 	"github.com/rwbailey/ray/tuple"
 )
 
@@ -14,6 +15,7 @@ type Material struct {
 	Diffuse   float64
 	Specular  float64
 	Shininess float64
+	Pattern   pattern.Pattern
 }
 
 func New() *Material {
@@ -23,10 +25,15 @@ func New() *Material {
 		Diffuse:   0.9,
 		Specular:  0.9,
 		Shininess: 200.0,
+		Pattern:   nil,
 	}
 }
 
 func (m *Material) Lighting(light *light.PointLight, point, eyev, normalv tuple.Tuple, inShadow bool) colour.Colour {
+
+	if m.Pattern != nil {
+		m.Colour = m.Pattern.ColourAt(point)
+	}
 
 	var ambient colour.Colour
 	var diffuse colour.Colour

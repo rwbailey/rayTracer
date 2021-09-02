@@ -7,6 +7,7 @@ import (
 	"github.com/rwbailey/ray/colour"
 	"github.com/rwbailey/ray/light"
 	"github.com/rwbailey/ray/material"
+	"github.com/rwbailey/ray/pattern"
 	"github.com/rwbailey/ray/tuple"
 	"github.com/stretchr/testify/assert"
 )
@@ -103,4 +104,24 @@ func TestLightingWithTheSurfaceInShadow(t *testing.T) {
 
 	// Then
 	assert.Equal(t, colour.New(0.1, 0.1, 0.1), result)
+}
+
+func TestLightingWithAPatternApplied(t *testing.T) {
+	// Given
+	background.Pattern = pattern.NewStripePattern(colour.White, colour.Black)
+	background.Ambient = 1
+	background.Diffuse = 0
+	background.Specular = 0
+
+	eyev := tuple.Vector(0, 0, -1)
+	normalv := tuple.Vector(0, 0, -1)
+	light := light.NewPointLight(tuple.Point(0, 0, -10), colour.White)
+
+	// When
+	c1 := background.Lighting(light, tuple.Point(0.9, 0, 0), eyev, normalv, false)
+	c2 := background.Lighting(light, tuple.Point(1.1, 0, 0), eyev, normalv, false)
+
+	// Then
+	assert.Equal(t, colour.White, c1)
+	assert.Equal(t, colour.Black, c2)
 }
