@@ -38,7 +38,7 @@ func (c *Canvas) PixelAt(x, y int) colour.Colour {
 	return c.Pixels[x][y]
 }
 
-// TODO: Refactor this shit
+// TODO: Refactor
 func (c *Canvas) CanvasToPPM() image.PPM {
 	ppm := []byte("P3\n" + fmt.Sprint(c.Width) + " " + fmt.Sprint(c.Height) + "\n255\n")
 
