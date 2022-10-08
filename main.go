@@ -11,6 +11,7 @@ import (
 	"github.com/rwbailey/ray/light"
 	"github.com/rwbailey/ray/material"
 	"github.com/rwbailey/ray/matrix"
+	"github.com/rwbailey/ray/pattern"
 	"github.com/rwbailey/ray/shape"
 	"github.com/rwbailey/ray/tuple"
 	"github.com/rwbailey/ray/world"
@@ -38,6 +39,7 @@ func planeScene() *canvas.Canvas {
 	floor := shape.NewPlane()
 	floor.Material.Colour = colour.White
 	floor.Material.Shininess = 100
+	floor.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
 
 	middle := shape.NewSphere()
 	middle.Transform = matrix.Translation(-0.5, 1, 0.5)
@@ -45,6 +47,7 @@ func planeScene() *canvas.Canvas {
 	middle.Material.Colour = colour.New(0.68, 0.85, 0.9)
 	middle.Material.Diffuse = 0.7
 	middle.Material.Specular = 0.3
+	middle.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
 
 	right := shape.NewSphere()
 	right.Transform = matrix.Translation(1.5, 0.5, -0.5).MultiplyMatrix(matrix.Scaling(0.5, 0.5, 0.5))
@@ -52,6 +55,7 @@ func planeScene() *canvas.Canvas {
 	right.Material.Colour = colour.New(0.5, 1, 0.1)
 	right.Material.Diffuse = 0.7
 	right.Material.Specular = 0.3
+	right.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
 
 	left := shape.NewSphere()
 	left.Transform = matrix.Translation(-1.5, 0.33, -0.75).MultiplyMatrix(matrix.Scaling(0.33, 0.33, 0.33))
@@ -59,6 +63,7 @@ func planeScene() *canvas.Canvas {
 	left.Material.Colour = colour.New(1, 0.8, 0.1)
 	left.Material.Diffuse = 0.7
 	left.Material.Specular = 0.3
+	left.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
 
 	w := world.New()
 	w.Light = light.NewPointLight(tuple.Point(-10, 10, -10), colour.White)

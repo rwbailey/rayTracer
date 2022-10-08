@@ -8,7 +8,7 @@ import (
 )
 
 type Pattern interface {
-	// isPattern()
+	isPattern()
 	ColourAt(p tuple.Tuple) colour.Colour
 }
 
@@ -17,7 +17,7 @@ type Stripes struct {
 	B colour.Colour
 }
 
-// func (*Stripes) isPattern() {}
+func (*Stripes) isPattern() {}
 
 func NewStripePattern(a, b colour.Colour) *Stripes {
 	return &Stripes{
