@@ -70,8 +70,9 @@ func (c *Camera) RayForPixel(px, py int) ray.Ray {
 func (c *Camera) Render(w *world.World) *canvas.Canvas {
 	img := canvas.New(int(c.HSize), int(c.VSize))
 
+	concurrency := 4
 	var wg sync.WaitGroup
-	wg.Add(4)
+	wg.Add(concurrency)
 
 	go func() {
 		defer wg.Done()
