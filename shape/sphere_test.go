@@ -17,13 +17,13 @@ func TestASpheresHasADefaultTransformation(t *testing.T) {
 	s := shape.NewSphere()
 
 	// Then
-	assert.EqualValues(t, matrix.Identity(4), s.Transform)
+	assert.EqualValues(t, matrix.IdentityMatrix(4), s.Transform)
 }
 
 func TestChangingASpheresTransformationMatrix(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	tm := matrix.Translation(2, 3, 4)
+	tm := matrix.TranslationMatrix(2, 3, 4)
 
 	// When
 	s.SetTransform(tm)
@@ -34,9 +34,9 @@ func TestChangingASpheresTransformationMatrix(t *testing.T) {
 
 func TestIntersectingAScaledSphereWithAnArray(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
-	tm := matrix.Scaling(2, 2, 2)
+	tm := matrix.ScalingMatrix(2, 2, 2)
 
 	// When
 	s.SetTransform(tm)
@@ -106,7 +106,7 @@ func TestTheNormalIsNormalised(t *testing.T) {
 func TestNormalOnATranslatedSphere(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	s.SetTransform(matrix.Translation(0, 1, 0))
+	s.SetTransform(matrix.TranslationMatrix(0, 1, 0))
 
 	// When
 	n := s.NormalAt(tuple.Point(0, 1.70711, -0.70711))
@@ -118,7 +118,7 @@ func TestNormalOnATranslatedSphere(t *testing.T) {
 func TestNormalOnATransformedSphere(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	m := matrix.Identity(4).RotateZ(math.Pi/5).Scale(1, 0.5, 1)
+	m := matrix.IdentityMatrix(4).RotateZ(math.Pi/5).Scale(1, 0.5, 1)
 	s.SetTransform(m)
 
 	// When
@@ -132,13 +132,13 @@ func TestASphereHasADefaultMaterial(t *testing.T) {
 	s := shape.NewSphere()
 
 	// Then
-	assert.EqualValues(t, material.New(), s.Material)
+	assert.EqualValues(t, material.NewMaterial(), s.Material)
 }
 
 func TestASphereMayBeAssignedAMaterial(t *testing.T) {
 	// Given
 	s := shape.NewSphere()
-	m := material.New()
+	m := material.NewMaterial()
 	m.Ambient = 1
 
 	// When

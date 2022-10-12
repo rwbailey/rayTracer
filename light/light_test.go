@@ -11,7 +11,7 @@ import (
 
 func TestAPointLightHasAPositionAndIntensity(t *testing.T) {
 	// Given
-	intensity := colour.New(1, 1, 1)
+	intensity := colour.NewColour(1, 1, 1)
 	position := tuple.Point(0, 0, 0)
 
 	// When

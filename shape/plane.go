@@ -17,8 +17,8 @@ type Plane struct {
 
 func NewPlane() *Plane {
 	return &Plane{
-		Transform: matrix.Identity(4),
-		Material:  material.New(),
+		Transform: matrix.IdentityMatrix(4),
+		Material:  material.NewMaterial(),
 	}
 }
 

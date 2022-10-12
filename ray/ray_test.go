@@ -15,7 +15,7 @@ func TestCreatingAndQueryingARay(t *testing.T) {
 	direction := tuple.Vector(4, 5, 6)
 
 	// When
-	r := ray.New(origin, direction)
+	r := ray.NewRay(origin, direction)
 
 	// Then
 	assert.EqualValues(t, origin, r.Origin)
@@ -24,7 +24,7 @@ func TestCreatingAndQueryingARay(t *testing.T) {
 
 func TestComputingAPointFromADistance(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(2, 3, 4), tuple.Vector(1, 0, 0))
+	r := ray.NewRay(tuple.Point(2, 3, 4), tuple.Vector(1, 0, 0))
 
 	// Then
 	assert.True(t, tuple.Point(2, 3, 4).Equals(r.Position(0)))
@@ -35,8 +35,8 @@ func TestComputingAPointFromADistance(t *testing.T) {
 
 func TestTranslatingARay(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(1, 2, 3), tuple.Vector(0, 1, 0))
-	m := matrix.Translation(3, 4, 5)
+	r := ray.NewRay(tuple.Point(1, 2, 3), tuple.Vector(0, 1, 0))
+	m := matrix.TranslationMatrix(3, 4, 5)
 
 	// When
 	r2 := r.Transform(m)
@@ -48,8 +48,8 @@ func TestTranslatingARay(t *testing.T) {
 
 func TestScalingARay(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(1, 2, 3), tuple.Vector(0, 1, 0))
-	m := matrix.Scaling(2, 3, 4)
+	r := ray.NewRay(tuple.Point(1, 2, 3), tuple.Vector(0, 1, 0))
+	m := matrix.ScalingMatrix(2, 3, 4)
 
 	// When
 	r2 := r.Transform(m)

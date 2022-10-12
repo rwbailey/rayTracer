@@ -6,14 +6,13 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/rwbailey/ray/tuple"
 	. "github.com/rwbailey/ray/tuple"
 )
 
 func TestTupleCreation(t *testing.T) {
 	// Given
-	p := New(4.3, -4.2, 3.1, 1.0)
-	v := New(4.3, -4.2, 3.1, 0.0)
+	p := NewTuple(4.3, -4.2, 3.1, 1.0)
+	v := NewTuple(4.3, -4.2, 3.1, 0.0)
 
 	// Then
 	assert.EqualValues(t, 4.3, p.X)
@@ -174,24 +173,24 @@ func TestCrossProduct(t *testing.T) {
 
 func TestReflectAVectorApproachingAt45(t *testing.T) {
 	// Given
-	v := tuple.Vector(1, -1, 0)
-	n := tuple.Vector(0, 1, 0)
+	v := Vector(1, -1, 0)
+	n := Vector(0, 1, 0)
 
 	// When
 	r := v.Reflect(n)
 
 	// Then
-	assert.True(t, r.Equals(tuple.Vector(1, 1, 0)))
+	assert.True(t, r.Equals(Vector(1, 1, 0)))
 }
 
 func TestReflectingAVectorOffASlantedSurface(t *testing.T) {
 	// Given
-	v := tuple.Vector(0, -1, 0)
-	n := tuple.Vector(math.Sqrt(2)/2, math.Sqrt(2)/2, 0)
+	v := Vector(0, -1, 0)
+	n := Vector(math.Sqrt(2)/2, math.Sqrt(2)/2, 0)
 
 	// When
 	r := v.Reflect(n)
 
 	// Then
-	assert.True(t, r.Equals(tuple.Vector(1, 0, 0)))
+	assert.True(t, r.Equals(Vector(1, 0, 0)))
 }

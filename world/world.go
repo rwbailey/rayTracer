@@ -14,25 +14,25 @@ type World struct {
 	Light   *light.PointLight
 }
 
-func New() *World {
+func NewWorld() *World {
 	return &World{
 		Objects: []shape.Shape{},
 		Light:   nil,
 	}
 }
 
-func Default() *World {
-	ls := light.NewPointLight(tuple.Point(-10, 10, -10), colour.New(1, 1, 1))
+func DefaultWorld() *World {
+	ls := light.NewPointLight(tuple.Point(-10, 10, -10), colour.NewColour(1, 1, 1))
 
 	s1 := shape.NewSphere()
-	s1.Material.Colour = colour.New(0.8, 1.0, 0.6)
+	s1.Material.Colour = colour.NewColour(0.8, 1.0, 0.6)
 	s1.Material.Diffuse = 0.7
 	s1.Material.Specular = 0.2
 
 	s2 := shape.NewSphere()
-	s2.Transform = matrix.Scaling(0.5, 0.5, 0.5)
+	s2.Transform = matrix.ScalingMatrix(0.5, 0.5, 0.5)
 
-	w := New()
+	w := NewWorld()
 	w.Light = ls
 	w.Objects = []shape.Shape{
 		s1,
@@ -43,9 +43,7 @@ func Default() *World {
 }
 
 func (w *World) AddObjects(objects ...shape.Shape) {
-	for _, ob := range objects {
-		w.Objects = append(w.Objects, ob)
-	}
+	w.Objects = append(w.Objects, objects...)
 }
 
 // IntersectWorld iterates over all of the objects in the world, and returns
@@ -74,7 +72,7 @@ func (w *World) ColourAt(r ray.Ray) colour.Colour {
 	xs := w.IntersectWorld(r)
 	hit := shape.Hit(xs)
 	if hit == nil {
-		return colour.New(0, 0, 0)
+		return colour.NewColour(0, 0, 0)
 	}
 	c := hit.PrepareComputations(r)
 	return w.ShadeHit(c)
@@ -85,7 +83,7 @@ func (w *World) IsShadowed(p tuple.Tuple) bool {
 
 	distance := v.Magnitude()
 	direction := v.Normalise()
-	r := ray.New(p, direction)
+	r := ray.NewRay(p, direction)
 	xs := w.IntersectWorld(r)
 	h := shape.Hit(xs)
 	if h != nil && h.T < distance {

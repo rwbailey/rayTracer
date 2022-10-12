@@ -12,15 +12,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var background = material.New()
+var background = material.NewMaterial()
 var point = tuple.Point(0, 0, 0)
 
 func TestDefaultMaterial(t *testing.T) {
 	// Given
-	m := material.New()
+	m := material.NewMaterial()
 
 	// Then
-	assert.EqualValues(t, colour.New(1, 1, 1), m.Colour)
+	assert.EqualValues(t, colour.NewColour(1, 1, 1), m.Colour)
 	assert.EqualValues(t, 0.1, m.Ambient)
 	assert.EqualValues(t, 0.9, m.Diffuse)
 	assert.EqualValues(t, 0.9, m.Specular)
@@ -31,79 +31,79 @@ func TestLightingWithTheEyeBetweenTheLightAndTheSurface(t *testing.T) {
 	// Given
 	eyev := tuple.Vector(0, 0, -1)
 	normalv := tuple.Vector(0, 0, -1)
-	light := light.NewPointLight(tuple.Point(0, 0, -10), colour.New(1, 1, 1))
+	light := light.NewPointLight(tuple.Point(0, 0, -10), colour.NewColour(1, 1, 1))
 
 	// When
 	result := background.Lighting(light, point, eyev, normalv, false)
 
 	// Then
-	assert.EqualValues(t, colour.New(1.9, 1.9, 1.9), result)
+	assert.EqualValues(t, colour.NewColour(1.9, 1.9, 1.9), result)
 }
 
 func TestLightingWithTheEyeBetweenTheLightAndTheSurface45Offset(t *testing.T) {
 	// Given
 	eyev := tuple.Vector(0, math.Sqrt(2)/2, -math.Sqrt(2)/2)
 	normalv := tuple.Vector(0, 0, -1)
-	light := light.NewPointLight(tuple.Point(0, 0, -10), colour.New(1, 1, 1))
+	light := light.NewPointLight(tuple.Point(0, 0, -10), colour.NewColour(1, 1, 1))
 
 	// When
 	result := background.Lighting(light, point, eyev, normalv, false)
 
 	// Then
-	assert.EqualValues(t, colour.New(1.0, 1.0, 1.0), result)
+	assert.EqualValues(t, colour.NewColour(1.0, 1.0, 1.0), result)
 }
 
 func TestLightingWithTheOppositeSurfaceAndLightAt45Offset(t *testing.T) {
 	// Given
 	eyev := tuple.Vector(0, 0, -1)
 	normalv := tuple.Vector(0, 0, -1)
-	light := light.NewPointLight(tuple.Point(0, 10, -10), colour.New(1, 1, 1))
+	light := light.NewPointLight(tuple.Point(0, 10, -10), colour.NewColour(1, 1, 1))
 
 	// When
 	result := background.Lighting(light, point, eyev, normalv, false)
 
 	// Then
-	assert.True(t, colour.New(0.7364, 0.7364, 0.7364).Equals(result))
+	assert.True(t, colour.NewColour(0.7364, 0.7364, 0.7364).Equals(result))
 }
 
 func TestLightingWithEyeInPathOfReflectionVector(t *testing.T) {
 	// Given
 	eyev := tuple.Vector(0, -math.Sqrt(2)/2, -math.Sqrt(2)/2)
 	normalv := tuple.Vector(0, 0, -1)
-	light := light.NewPointLight(tuple.Point(0, 10, -10), colour.New(1, 1, 1))
+	light := light.NewPointLight(tuple.Point(0, 10, -10), colour.NewColour(1, 1, 1))
 
 	// When
 	result := background.Lighting(light, point, eyev, normalv, false)
 
 	// Then
-	assert.True(t, colour.New(1.6364, 1.6364, 1.6364).Equals(result))
+	assert.True(t, colour.NewColour(1.6364, 1.6364, 1.6364).Equals(result))
 }
 
 func TestLightingWithLightBehindTheSurface(t *testing.T) {
 	// Given
 	eyev := tuple.Vector(0, 0, -1)
 	normalv := tuple.Vector(0, 0, -1)
-	light := light.NewPointLight(tuple.Point(0, 0, 10), colour.New(1, 1, 1))
+	light := light.NewPointLight(tuple.Point(0, 0, 10), colour.NewColour(1, 1, 1))
 
 	// When
 	result := background.Lighting(light, point, eyev, normalv, false)
 
 	// Then
-	assert.EqualValues(t, colour.New(0.1, 0.1, 0.1), result)
+	assert.EqualValues(t, colour.NewColour(0.1, 0.1, 0.1), result)
 }
 
 func TestLightingWithTheSurfaceInShadow(t *testing.T) {
 	// Given
 	eyev := tuple.Vector(0, 0, -1)
 	normalv := tuple.Vector(0, 0, -1)
-	light := light.NewPointLight(tuple.Point(0, 0, -10), colour.New(1, 1, 1))
+	light := light.NewPointLight(tuple.Point(0, 0, -10), colour.NewColour(1, 1, 1))
 	inShadow := true
 
 	// When
 	result := background.Lighting(light, point, eyev, normalv, inShadow)
 
 	// Then
-	assert.Equal(t, colour.New(0.1, 0.1, 0.1), result)
+	assert.Equal(t, colour.NewColour(0.1, 0.1, 0.1), result)
 }
 
 func TestLightingWithAPatternApplied(t *testing.T) {

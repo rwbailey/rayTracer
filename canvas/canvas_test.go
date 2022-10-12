@@ -11,7 +11,7 @@ import (
 
 func TestCanvasCreation(t *testing.T) {
 	// Given
-	c := canvas.New(10, 20)
+	c := canvas.NewCanvas(10, 20)
 
 	// Then
 	assert.EqualValues(t, 10, c.Width)
@@ -27,8 +27,8 @@ func TestCanvasCreation(t *testing.T) {
 
 func TestCanvasWritePixel(t *testing.T) {
 	// Given
-	c := canvas.New(20, 10)
-	r := colour.New(1, 0, 0)
+	c := canvas.NewCanvas(20, 10)
+	r := colour.NewColour(1, 0, 0)
 
 	// When
 	c.WritePixel(2, 3, r)
@@ -39,7 +39,7 @@ func TestCanvasWritePixel(t *testing.T) {
 
 func TestCanvasToPPMHeader(t *testing.T) {
 	// Given
-	c := canvas.New(80, 50)
+	c := canvas.NewCanvas(80, 50)
 
 	// When
 	ppm := c.CanvasToPPM()
@@ -53,10 +53,10 @@ func TestCanvasToPPMHeader(t *testing.T) {
 
 func TestCanvasToPPMBody(t *testing.T) {
 	// Given
-	c := canvas.New(5, 3)
-	p1 := colour.New(1.5, 0, 0)
-	p2 := colour.New(0, 0.5, 0)
-	p3 := colour.New(-0.5, 0, 1)
+	c := canvas.NewCanvas(5, 3)
+	p1 := colour.NewColour(1.5, 0, 0)
+	p2 := colour.NewColour(0, 0.5, 0)
+	p3 := colour.NewColour(-0.5, 0, 1)
 
 	// When
 	c.WritePixel(0, 0, p1)
@@ -77,8 +77,8 @@ func TestCanvasToPPMBody(t *testing.T) {
 
 func TestCanvasToPPMSplitLongLines(t *testing.T) {
 	// Given
-	c := canvas.New(10, 2)
-	colour := colour.New(1, 0.8, 0.6)
+	c := canvas.NewCanvas(10, 2)
+	colour := colour.NewColour(1, 0.8, 0.6)
 
 	// When
 	for y := 0; y < 2; y++ {

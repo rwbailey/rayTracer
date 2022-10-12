@@ -17,7 +17,7 @@ import (
 
 func TestCreatingAnEmptyWorld(t *testing.T) {
 	// Given
-	w := world.New()
+	w := world.NewWorld()
 
 	// Then
 	objects := w.Objects
@@ -29,18 +29,18 @@ func TestCreatingAnEmptyWorld(t *testing.T) {
 
 func TestCreateDefaultWorld(t *testing.T) {
 	// Given
-	ls := light.NewPointLight(tuple.Point(-10, 10, -10), colour.New(1, 1, 1))
+	ls := light.NewPointLight(tuple.Point(-10, 10, -10), colour.NewColour(1, 1, 1))
 
 	s1 := shape.NewSphere()
-	s1.Material.Colour = colour.New(0.8, 1.0, 0.6)
+	s1.Material.Colour = colour.NewColour(0.8, 1.0, 0.6)
 	s1.Material.Diffuse = 0.7
 	s1.Material.Specular = 0.2
 
 	s2 := shape.NewSphere()
-	s2.Transform = matrix.Scaling(0.5, 0.5, 0.5)
+	s2.Transform = matrix.ScalingMatrix(0.5, 0.5, 0.5)
 
 	// When
-	w := world.Default()
+	w := world.DefaultWorld()
 
 	// Then
 	assert.EqualValues(t, w.Light, ls)
@@ -50,8 +50,8 @@ func TestCreateDefaultWorld(t *testing.T) {
 
 func TestIntersectWorld(t *testing.T) {
 	// Given
-	w := world.Default()
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	w := world.DefaultWorld()
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 
 	// When
 	xs := w.IntersectWorld(r)
@@ -66,8 +66,8 @@ func TestIntersectWorld(t *testing.T) {
 
 func TestShadeAnIntersection(t *testing.T) {
 	// Given
-	w := world.Default()
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	w := world.DefaultWorld()
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 	s := w.Objects[0]
 	i := &shape.Intersection{T: 4, Object: s}
 
@@ -76,14 +76,14 @@ func TestShadeAnIntersection(t *testing.T) {
 	c := w.ShadeHit(comps)
 	fmt.Println(c)
 	// Then
-	assert.True(t, colour.New(0.38066, 0.47583, 0.2855).Equals(c))
+	assert.True(t, colour.NewColour(0.38066, 0.47583, 0.2855).Equals(c))
 }
 
 func TestShadeAnIntersectionFromTheInside(t *testing.T) {
 	// Given
-	w := world.Default()
-	w.Light = light.NewPointLight(tuple.Point(0, 0.25, 0), colour.New(1, 1, 1))
-	r := ray.New(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
+	w := world.DefaultWorld()
+	w.Light = light.NewPointLight(tuple.Point(0, 0.25, 0), colour.NewColour(1, 1, 1))
+	r := ray.NewRay(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
 	s := w.Objects[1]
 	i := &shape.Intersection{T: 0.5, Object: s}
 
@@ -93,42 +93,42 @@ func TestShadeAnIntersectionFromTheInside(t *testing.T) {
 	fmt.Println(c)
 
 	// Then
-	assert.True(t, colour.New(0.90498, 0.90498, 0.90498).Equals(c))
+	assert.True(t, colour.NewColour(0.90498, 0.90498, 0.90498).Equals(c))
 }
 
 func TestTheColourWhenARayMisses(t *testing.T) {
 	// Given
-	w := world.Default()
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 1, 0))
+	w := world.DefaultWorld()
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 1, 0))
 
 	// When
 	c := w.ColourAt(r)
 
 	// Then
-	assert.True(t, colour.New(0, 0, 0).Equals(c))
+	assert.True(t, colour.NewColour(0, 0, 0).Equals(c))
 }
 
 func TestTheColourWhenARayHits(t *testing.T) {
 	// Given
-	w := world.Default()
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	w := world.DefaultWorld()
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 
 	// When
 	c := w.ColourAt(r)
 
 	// Then
-	assert.True(t, colour.New(0.38066, 0.47583, 0.2855).Equals(c))
+	assert.True(t, colour.NewColour(0.38066, 0.47583, 0.2855).Equals(c))
 
 }
 
 func TestTheColourWithAnIntersectionBehindTheRay(t *testing.T) {
 	// Given
-	w := world.Default()
+	w := world.DefaultWorld()
 	outer := w.Objects[0]
 	outer.GetMaterial().Ambient = 1
 	inner := w.Objects[1]
 	inner.GetMaterial().Ambient = 1
-	r := ray.New(tuple.Point(0, 0, 0.75), tuple.Vector(0, 0, -1))
+	r := ray.NewRay(tuple.Point(0, 0, 0.75), tuple.Vector(0, 0, -1))
 
 	// When
 	c := w.ColourAt(r)
@@ -139,7 +139,7 @@ func TestTheColourWithAnIntersectionBehindTheRay(t *testing.T) {
 
 func TestThereIsNoShadowWhenNothingIsColinearWithThePointAndLight(t *testing.T) {
 	// Given
-	w := world.Default()
+	w := world.DefaultWorld()
 	p := tuple.Point(0, 10, 0)
 
 	// Then
@@ -148,7 +148,7 @@ func TestThereIsNoShadowWhenNothingIsColinearWithThePointAndLight(t *testing.T) 
 
 func TestTheShadowWhenAnObjectIsBetweenThePointAndTheLIght(t *testing.T) {
 	// Given
-	w := world.Default()
+	w := world.DefaultWorld()
 	p := tuple.Point(10, -10, 10)
 
 	// Then
@@ -157,7 +157,7 @@ func TestTheShadowWhenAnObjectIsBetweenThePointAndTheLIght(t *testing.T) {
 
 func TestTheShadowWhenAnObjectIsBehindTheLight(t *testing.T) {
 	// Given
-	w := world.Default()
+	w := world.DefaultWorld()
 	p := tuple.Point(-20, 20, -20)
 
 	// Then
@@ -166,7 +166,7 @@ func TestTheShadowWhenAnObjectIsBehindTheLight(t *testing.T) {
 
 func TestTheShadowWhenAnObjectIsBehindThePoint(t *testing.T) {
 	// Given
-	w := world.Default()
+	w := world.DefaultWorld()
 	p := tuple.Point(-2, 2, -2)
 
 	// Then
@@ -175,14 +175,14 @@ func TestTheShadowWhenAnObjectIsBehindThePoint(t *testing.T) {
 
 func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 	// Given
-	w := world.New()
+	w := world.NewWorld()
 	w.Light = light.NewPointLight(tuple.Point(0, 0, -10), colour.White)
 	s1 := shape.NewSphere()
 	w.Objects = append(w.Objects, s1)
 	s2 := shape.NewSphere()
-	s2.Transform = matrix.Translation(0, 0, 10)
+	s2.Transform = matrix.TranslationMatrix(0, 0, 10)
 	w.Objects = append(w.Objects, s2)
-	r := ray.New(tuple.Point(0, 0, 5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, 5), tuple.Vector(0, 0, 1))
 	i := &shape.Intersection{T: 4, Object: s2}
 
 	// When
@@ -190,14 +190,14 @@ func TestShadeHitIsGivenAnIntersectionInShadow(t *testing.T) {
 	c := w.ShadeHit(comps)
 
 	// Then
-	assert.True(t, colour.New(0.1, 0.1, 0.1).Equals(c))
+	assert.True(t, colour.NewColour(0.1, 0.1, 0.1).Equals(c))
 }
 
 func TestTheHitShouldOffsetThePoint(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
-	s.Transform = matrix.Translation(0, 0, 1)
+	s.Transform = matrix.TranslationMatrix(0, 0, 1)
 	i := &shape.Intersection{T: 5, Object: s}
 
 	// When

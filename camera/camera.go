@@ -21,12 +21,12 @@ type Camera struct {
 	HalfWidth   float64
 }
 
-func New(h, v, f float64) *Camera {
+func NewCamera(h, v, f float64) *Camera {
 	c := &Camera{
 		HSize:       h,
 		VSize:       v,
 		FieldOfView: f,
-		Transform:   matrix.Identity(4),
+		Transform:   matrix.IdentityMatrix(4),
 	}
 	c.pixelSize(h, v, f)
 
@@ -64,11 +64,11 @@ func (c *Camera) RayForPixel(px, py int) ray.Ray {
 	origin := c.Transform.Inverse().MultiplyTuple(tuple.Point(0, 0, 0))
 	direction := pixel.Subtract(origin).Normalise()
 
-	return ray.New(origin, direction)
+	return ray.NewRay(origin, direction)
 }
 
 func (c *Camera) Render(w *world.World) *canvas.Canvas {
-	img := canvas.New(int(c.HSize), int(c.VSize))
+	img := canvas.NewCanvas(int(c.HSize), int(c.VSize))
 
 	concurrency := 4
 	var wg sync.WaitGroup

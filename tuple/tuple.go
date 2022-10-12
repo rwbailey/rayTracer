@@ -13,19 +13,19 @@ type Tuple struct {
 	W float64
 }
 
-// New returns a new tuple
-func New(x, y, z, w float64) Tuple {
+// NewTuple returns a new tuple
+func NewTuple(x, y, z, w float64) Tuple {
 	return Tuple{x, y, z, w}
 }
 
 // Point returns a new point
 func Point(x, y, z float64) Tuple {
-	return New(x, y, z, 1.0)
+	return NewTuple(x, y, z, 1.0)
 }
 
 // Vector returns new vector
 func Vector(x, y, z float64) Tuple {
-	return New(x, y, z, 0.0)
+	return NewTuple(x, y, z, 0.0)
 }
 
 // IsPoint returns true if t is a point, else returns false

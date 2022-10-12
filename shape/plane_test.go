@@ -28,7 +28,7 @@ func TestTheNormalOfAPlaneIsTheSameEverywhere(t *testing.T) {
 func TestIntersectWithARayParallelToThePlane(t *testing.T) {
 	// Given
 	p := shape.NewPlane()
-	r := ray.New(tuple.Point(0, 10, 0), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 10, 0), tuple.Vector(0, 0, 1))
 
 	// When
 	xs := p.Intersect(r)
@@ -40,7 +40,7 @@ func TestIntersectWithARayParallelToThePlane(t *testing.T) {
 func TestIntersectWithACoplanarRay(t *testing.T) {
 	// Given
 	p := shape.NewPlane()
-	r := ray.New(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
 
 	// When
 	xs := p.Intersect(r)
@@ -52,7 +52,7 @@ func TestIntersectWithACoplanarRay(t *testing.T) {
 func TestARayIntersectingAPlaneFromAbove(t *testing.T) {
 	// Given
 	p := shape.NewPlane()
-	r := ray.New(tuple.Point(0, 1, 0), tuple.Vector(0, -1, 0))
+	r := ray.NewRay(tuple.Point(0, 1, 0), tuple.Vector(0, -1, 0))
 
 	// When
 	xs := p.Intersect(r)
@@ -66,7 +66,7 @@ func TestARayIntersectingAPlaneFromAbove(t *testing.T) {
 func TestARayIntersectingAPlaneFromBelow(t *testing.T) {
 	// Given
 	p := shape.NewPlane()
-	r := ray.New(tuple.Point(0, -1, 0), tuple.Vector(0, 1, 0))
+	r := ray.NewRay(tuple.Point(0, -1, 0), tuple.Vector(0, 1, 0))
 
 	// When
 	xs := p.Intersect(r)

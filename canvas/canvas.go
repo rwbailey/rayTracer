@@ -14,13 +14,13 @@ type Canvas struct {
 	Pixels [][]colour.Colour
 }
 
-func New(w, h int) *Canvas {
+func NewCanvas(w, h int) *Canvas {
 	pixels := make([][]colour.Colour, w)
 
 	for i := 0; i < w; i++ {
 		pixels[i] = make([]colour.Colour, h)
 		for j := 0; j < h; j++ {
-			pixels[i][j] = colour.New(0, 0, 0)
+			pixels[i][j] = colour.NewColour(0, 0, 0)
 		}
 	}
 	return &Canvas{

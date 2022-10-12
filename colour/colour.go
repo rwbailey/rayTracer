@@ -13,11 +13,11 @@ var (
 )
 
 func init() {
-	White = New(1, 1, 1)
-	Black = New(0, 0, 0)
+	White = NewColour(1, 1, 1)
+	Black = NewColour(0, 0, 0)
 }
 
-func New(r, g, b float64) Colour {
+func NewColour(r, g, b float64) Colour {
 	return Colour{
 		Red:   r,
 		Green: g,

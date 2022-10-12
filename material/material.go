@@ -18,9 +18,9 @@ type Material struct {
 	Pattern   pattern.Pattern
 }
 
-func New() *Material {
+func NewMaterial() *Material {
 	return &Material{
-		Colour:    colour.New(1, 1, 1),
+		Colour:    colour.NewColour(1, 1, 1),
 		Ambient:   0.1,
 		Diffuse:   0.9,
 		Specular:  0.9,
@@ -52,8 +52,8 @@ func (m *Material) Lighting(light *light.PointLight, point, eyev, normalv tuple.
 	// A negative number means the light is on the other side of the surface.
 	lightDotNormal := lightv.Dot(normalv)
 	if lightDotNormal < 0 {
-		diffuse = colour.New(0, 0, 0)
-		specular = colour.New(0, 0, 0)
+		diffuse = colour.NewColour(0, 0, 0)
+		specular = colour.NewColour(0, 0, 0)
 	} else {
 		// Compute diffuse contribution
 		diffuse = effectiveColour.Multiply(m.Diffuse * lightDotNormal)
@@ -64,7 +64,7 @@ func (m *Material) Lighting(light *light.PointLight, point, eyev, normalv tuple.
 		reflectv := lightv.Negate().Reflect(normalv)
 		reflectDotEye := reflectv.Dot(eyev)
 		if reflectDotEye <= 0 {
-			specular = colour.New(0, 0, 0)
+			specular = colour.NewColour(0, 0, 0)
 		} else {
 			// Compute the specular contribution
 			factor := math.Pow(reflectDotEye, m.Shininess)

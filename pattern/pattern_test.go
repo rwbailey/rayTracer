@@ -54,7 +54,7 @@ func TestAStripePatternAlternatesInX(t *testing.T) {
 
 func TestLightingWithPattern(t *testing.T) {
 	// Given
-	m := material.New()
+	m := material.NewMaterial()
 	m.Pattern = pattern.NewStripePattern(colour.White, colour.Black)
 	m.Ambient = 1
 	m.Diffuse = 0

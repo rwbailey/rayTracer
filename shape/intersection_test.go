@@ -11,7 +11,7 @@ import (
 
 func TestRaySphereIntersectionAtTwoPoints(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 
 	// When
@@ -25,7 +25,7 @@ func TestRaySphereIntersectionAtTwoPoints(t *testing.T) {
 
 func TestRaySphereIntersectionAtTangent(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 1, -5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 1, -5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 
 	// When
@@ -39,7 +39,7 @@ func TestRaySphereIntersectionAtTangent(t *testing.T) {
 
 func TestRaySphereNoIntersection(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 2, -5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 2, -5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 
 	// When
@@ -51,7 +51,7 @@ func TestRaySphereNoIntersection(t *testing.T) {
 
 func TestRayOriginatesInsideSphere(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 
 	// When
@@ -65,7 +65,7 @@ func TestRayOriginatesInsideSphere(t *testing.T) {
 
 func TestSphereBehindRay(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, 5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, 5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 
 	// When
@@ -109,7 +109,7 @@ func TestAggregatingIntersections(t *testing.T) {
 
 func TestIntersectSetsObject(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 
 	// When
@@ -184,7 +184,7 @@ func TestHitIsAlwaysLowestNonNegativeIntersection(t *testing.T) {
 
 func TestPrecomputingTheStateOfAnIntersection(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 	i := shape.Intersection{4, s}
 
@@ -201,7 +201,7 @@ func TestPrecomputingTheStateOfAnIntersection(t *testing.T) {
 
 func TestTheHitWhenTheIntersectionIsOnTheOutside(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, -5), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 	i := &shape.Intersection{4, s}
 
@@ -214,7 +214,7 @@ func TestTheHitWhenTheIntersectionIsOnTheOutside(t *testing.T) {
 
 func TestTheHitWhenTheIntersectionIsOnTheIntside(t *testing.T) {
 	// Given
-	r := ray.New(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
+	r := ray.NewRay(tuple.Point(0, 0, 0), tuple.Vector(0, 0, 1))
 	s := shape.NewSphere()
 	i := &shape.Intersection{1, s}
 

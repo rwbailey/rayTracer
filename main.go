@@ -42,34 +42,34 @@ func planeScene() *canvas.Canvas {
 	floor.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
 
 	middle := shape.NewSphere()
-	middle.Transform = matrix.Translation(-0.5, 1, 0.5)
-	middle.Material = material.New()
-	middle.Material.Colour = colour.New(0.68, 0.85, 0.9)
+	middle.Transform = matrix.TranslationMatrix(-0.5, 1, 0.5)
+	middle.Material = material.NewMaterial()
+	middle.Material.Colour = colour.NewColour(0.68, 0.85, 0.9)
 	middle.Material.Diffuse = 0.7
 	middle.Material.Specular = 0.3
 	middle.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
 
 	right := shape.NewSphere()
-	right.Transform = matrix.Translation(1.5, 0.5, -0.5).MultiplyMatrix(matrix.Scaling(0.5, 0.5, 0.5))
-	right.Material = material.New()
-	right.Material.Colour = colour.New(0.5, 1, 0.1)
+	right.Transform = matrix.TranslationMatrix(1.5, 0.5, -0.5).MultiplyMatrix(matrix.ScalingMatrix(0.5, 0.5, 0.5))
+	right.Material = material.NewMaterial()
+	right.Material.Colour = colour.NewColour(0.5, 1, 0.1)
 	right.Material.Diffuse = 0.7
 	right.Material.Specular = 0.3
 	right.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
 
 	left := shape.NewSphere()
-	left.Transform = matrix.Translation(-1.5, 0.33, -0.75).MultiplyMatrix(matrix.Scaling(0.33, 0.33, 0.33))
-	left.Material = material.New()
-	left.Material.Colour = colour.New(1, 0.8, 0.1)
+	left.Transform = matrix.TranslationMatrix(-1.5, 0.33, -0.75).MultiplyMatrix(matrix.ScalingMatrix(0.33, 0.33, 0.33))
+	left.Material = material.NewMaterial()
+	left.Material.Colour = colour.NewColour(1, 0.8, 0.1)
 	left.Material.Diffuse = 0.7
 	left.Material.Specular = 0.3
 	left.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
 
-	w := world.New()
+	w := world.NewWorld()
 	w.Light = light.NewPointLight(tuple.Point(-10, 10, -10), colour.White)
 	w.AddObjects(floor, middle, right, left)
 
-	c := camera.New(800, 500, math.Pi/3)
+	c := camera.NewCamera(800, 500, math.Pi/3)
 	c.Transform = matrix.ViewTransform(tuple.Point(0, 1.5, -5), tuple.Point(0, 1, 0), tuple.Point(0, 1, 0))
 	img := c.Render(w)
 

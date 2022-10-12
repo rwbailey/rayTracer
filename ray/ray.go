@@ -10,7 +10,7 @@ type Ray struct {
 	Direction tuple.Tuple
 }
 
-func New(origin, direction tuple.Tuple) Ray {
+func NewRay(origin, direction tuple.Tuple) Ray {
 	return Ray{
 		Origin:    origin,
 		Direction: direction,

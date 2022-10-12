@@ -19,18 +19,18 @@ func TestConstructingACamera(t *testing.T) {
 	fieldOfView := math.Pi / 2
 
 	// When
-	c := camera.New(hsize, vsize, fieldOfView)
+	c := camera.NewCamera(hsize, vsize, fieldOfView)
 
 	// Then
 	assert.EqualValues(t, 160, c.HSize)
 	assert.EqualValues(t, 120, c.VSize)
 	assert.EqualValues(t, math.Pi/2, c.FieldOfView)
-	assert.EqualValues(t, matrix.Identity(4), c.Transform)
+	assert.EqualValues(t, matrix.IdentityMatrix(4), c.Transform)
 }
 
 func TestThePixelSizeForAHorizontalCanvas(t *testing.T) {
 	// Given
-	c := camera.New(200, 125, math.Pi/2)
+	c := camera.NewCamera(200, 125, math.Pi/2)
 
 	// Then
 	assert.EqualValues(t, 0.01, c.PixelSize)
@@ -38,7 +38,7 @@ func TestThePixelSizeForAHorizontalCanvas(t *testing.T) {
 
 func TestThePixelSizeForAVerticalCanvas(t *testing.T) {
 	// Given
-	c := camera.New(125, 200, math.Pi/2)
+	c := camera.NewCamera(125, 200, math.Pi/2)
 
 	// Then
 	assert.EqualValues(t, 0.01, c.PixelSize)
@@ -46,7 +46,7 @@ func TestThePixelSizeForAVerticalCanvas(t *testing.T) {
 
 func TestConstructingARayThroughTheCentreOfTheCanvas(t *testing.T) {
 	// Given
-	c := camera.New(201, 101, math.Pi/2)
+	c := camera.NewCamera(201, 101, math.Pi/2)
 
 	// When
 	r := c.RayForPixel(100, 50)
@@ -58,7 +58,7 @@ func TestConstructingARayThroughTheCentreOfTheCanvas(t *testing.T) {
 
 func TestConstructingARayThroughTheCornerOfTheCanvas(t *testing.T) {
 	// Given
-	c := camera.New(201, 101, math.Pi/2)
+	c := camera.NewCamera(201, 101, math.Pi/2)
 
 	// When
 	r := c.RayForPixel(0, 0)
@@ -70,10 +70,10 @@ func TestConstructingARayThroughTheCornerOfTheCanvas(t *testing.T) {
 
 func TestConstructingARayWhenTheCameraIsTransformed(t *testing.T) {
 	// Given
-	c := camera.New(201, 101, math.Pi/2)
+	c := camera.NewCamera(201, 101, math.Pi/2)
 
 	// When
-	c.Transform = matrix.RotationY(math.Pi / 4).MultiplyMatrix(matrix.Translation(0, -2, 5))
+	c.Transform = matrix.RotationYMatrix(math.Pi / 4).MultiplyMatrix(matrix.TranslationMatrix(0, -2, 5))
 	r := c.RayForPixel(100, 50)
 
 	// Then
@@ -83,8 +83,8 @@ func TestConstructingARayWhenTheCameraIsTransformed(t *testing.T) {
 
 func TestRenderingAWorldWithACamera(t *testing.T) {
 	// Given
-	w := world.Default()
-	c := camera.New(11, 11, math.Pi/2)
+	w := world.DefaultWorld()
+	c := camera.NewCamera(11, 11, math.Pi/2)
 	from := tuple.Point(0, 0, -5)
 	to := tuple.Point(0, 0, 0)
 	up := tuple.Vector(0, 1, 0)
@@ -94,5 +94,5 @@ func TestRenderingAWorldWithACamera(t *testing.T) {
 	img := c.Render(w)
 
 	// Then
-	assert.True(t, colour.New(0.38066, 0.47583, 0.2855).Equals(img.PixelAt(5, 5)))
+	assert.True(t, colour.NewColour(0.38066, 0.47583, 0.2855).Equals(img.PixelAt(5, 5)))
 }

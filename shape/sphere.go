@@ -16,8 +16,8 @@ type Sphere struct {
 
 func NewSphere() *Sphere {
 	return &Sphere{
-		Transform: matrix.Identity(4),
-		Material:  material.New(),
+		Transform: matrix.IdentityMatrix(4),
+		Material:  material.NewMaterial(),
 	}
 }
 
