@@ -5,16 +5,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/rwbailey/ray/camera"
-	"github.com/rwbailey/ray/canvas"
-	"github.com/rwbailey/ray/colour"
-	"github.com/rwbailey/ray/light"
-	"github.com/rwbailey/ray/material"
-	"github.com/rwbailey/ray/matrix"
-	"github.com/rwbailey/ray/pattern"
-	"github.com/rwbailey/ray/shape"
-	"github.com/rwbailey/ray/tuple"
-	"github.com/rwbailey/ray/world"
+	"github.com/rwbailey/ray/tracer"
 )
 
 // var white colour.Colour
@@ -34,43 +25,43 @@ func main() {
 	fmt.Println(finish.Sub(start).Seconds())
 }
 
-func planeScene() *canvas.Canvas {
+func planeScene() *tracer.Canvas {
 
-	floor := shape.NewPlane()
-	floor.Material.Colour = colour.White
+	floor := tracer.NewPlane()
+	floor.Material.Colour = tracer.White
 	floor.Material.Shininess = 100
-	floor.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
+	floor.Material.Pattern = tracer.NewStripePattern(tracer.Black, tracer.White)
 
-	middle := shape.NewSphere()
-	middle.Transform = matrix.TranslationMatrix(-0.5, 1, 0.5)
-	middle.Material = material.NewMaterial()
-	middle.Material.Colour = colour.NewColour(0.68, 0.85, 0.9)
+	middle := tracer.NewSphere()
+	middle.Transform = tracer.TranslationMatrix(-0.5, 1, 0.5)
+	middle.Material = tracer.NewMaterial()
+	middle.Material.Colour = tracer.NewColour(0.68, 0.85, 0.9)
 	middle.Material.Diffuse = 0.7
 	middle.Material.Specular = 0.3
-	middle.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
+	middle.Material.Pattern = tracer.NewStripePattern(tracer.Black, tracer.White)
 
-	right := shape.NewSphere()
-	right.Transform = matrix.TranslationMatrix(1.5, 0.5, -0.5).MultiplyMatrix(matrix.ScalingMatrix(0.5, 0.5, 0.5))
-	right.Material = material.NewMaterial()
-	right.Material.Colour = colour.NewColour(0.5, 1, 0.1)
+	right := tracer.NewSphere()
+	right.Transform = tracer.TranslationMatrix(1.5, 0.5, -0.5).MultiplyMatrix(tracer.ScalingMatrix(0.5, 0.5, 0.5))
+	right.Material = tracer.NewMaterial()
+	right.Material.Colour = tracer.NewColour(0.5, 1, 0.1)
 	right.Material.Diffuse = 0.7
 	right.Material.Specular = 0.3
-	right.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
+	right.Material.Pattern = tracer.NewStripePattern(tracer.Black, tracer.White)
 
-	left := shape.NewSphere()
-	left.Transform = matrix.TranslationMatrix(-1.5, 0.33, -0.75).MultiplyMatrix(matrix.ScalingMatrix(0.33, 0.33, 0.33))
-	left.Material = material.NewMaterial()
-	left.Material.Colour = colour.NewColour(1, 0.8, 0.1)
+	left := tracer.NewSphere()
+	left.Transform = tracer.TranslationMatrix(-1.5, 0.33, -0.75).MultiplyMatrix(tracer.ScalingMatrix(0.33, 0.33, 0.33))
+	left.Material = tracer.NewMaterial()
+	left.Material.Colour = tracer.NewColour(1, 0.8, 0.1)
 	left.Material.Diffuse = 0.7
 	left.Material.Specular = 0.3
-	left.Material.Pattern = pattern.NewStripePattern(colour.Black, colour.White)
+	left.Material.Pattern = tracer.NewStripePattern(tracer.Black, tracer.White)
 
-	w := world.NewWorld()
-	w.Light = light.NewPointLight(tuple.Point(-10, 10, -10), colour.White)
+	w := tracer.NewWorld()
+	w.Light = tracer.NewPointLight(tracer.Point(-10, 10, -10), tracer.White)
 	w.AddObjects(floor, middle, right, left)
 
-	c := camera.NewCamera(800, 500, math.Pi/3)
-	c.Transform = matrix.ViewTransform(tuple.Point(0, 1.5, -5), tuple.Point(0, 1, 0), tuple.Point(0, 1, 0))
+	c := tracer.NewCamera(800, 500, math.Pi/3)
+	c.Transform = tracer.ViewTransform(tracer.Point(0, 1.5, -5), tracer.Point(0, 1, 0), tracer.Point(0, 1, 0))
 	img := c.Render(w)
 
 	return img
