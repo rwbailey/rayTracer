@@ -68,3 +68,43 @@ func TestLightingWithPattern(t *testing.T) {
 	assert.Equal(t, White, c1)
 	assert.Equal(t, Black, c2)
 }
+
+func TestStripesWithObjectTransformation(t *testing.T) {
+	// Given
+	obj := NewSphere()
+	obj.SetTransform(ScalingMatrix(2, 2, 2))
+	obj.Material.Pattern = NewStripePattern(White, Black)
+
+	// When
+	c := obj.Material.Pattern.ColourAtObject(obj, Point(1.5, 0, 0))
+
+	// Then
+	assert.Equal(t, White, c)
+}
+
+func TestStripesWithPatternTransformation(t *testing.T) {
+	// Given
+	obj := NewSphere()
+	obj.Material.Pattern = NewStripePattern(White, Black)
+	obj.Material.Pattern.SetTransform(ScalingMatrix(2, 2, 2))
+
+	// When
+	c := obj.Material.Pattern.ColourAtObject(obj, Point(1.5, 0, 0))
+
+	// Then
+	assert.Equal(t, c, White)
+}
+
+func TestStripesWithPatternAndObjectTransformations(t *testing.T) {
+	// Given
+	obj := NewSphere()
+	obj.SetTransform(ScalingMatrix(2, 2, 2))
+	obj.Material.Pattern = NewStripePattern(White, Black)
+	obj.Material.Pattern.SetTransform(TranslationMatrix(0.5, 0, 0))
+
+	// When
+	c := obj.Material.Pattern.ColourAtObject(obj, Point(2.5, 0, 0))
+
+	// Then
+	assert.Equal(t, White, c)
+}
