@@ -5,7 +5,6 @@ import (
 )
 
 type Pattern interface {
-	// isPattern()
 	ColourAt(p Tuple) Colour
 	ColourAtObject(obj Shape, worldPoint Tuple) Colour
 	SetTransform(m Matrix)
@@ -17,8 +16,6 @@ type Stripes struct {
 	B         Colour
 	Transform Matrix
 }
-
-// func (*Stripes) isPattern() {}
 
 func NewStripePattern(a, b Colour) *Stripes {
 	return &Stripes{

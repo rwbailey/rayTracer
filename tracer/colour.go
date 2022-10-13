@@ -7,12 +7,23 @@ type Colour struct {
 }
 
 var (
-	White, Black, Red, Green, Blue Colour
+	White, Black, Red, Green, Blue, Yellow, Brown, Gold, Cyan, Grey, Orange, Pink, Purple Colour
 )
 
 func init() {
 	White = NewColour(1, 1, 1)
 	Black = NewColour(0, 0, 0)
+	Red = NewColour(1, 0, 0)
+	Green = NewColour(0, 1, 0)
+	Blue = NewColour(0, 0, 1)
+	Yellow = NewColour(1, 1, 0)
+	Brown = NewColour(165.0/255, 42.0/255, 42.0/255)
+	Gold = NewColour(1, 215.0/255, 0)
+	Cyan = NewColour(0, 1, 1)
+	Grey = NewColour(128.0/255, 128.0/255, 128.0/255)
+	Orange = NewColour(1, 140.0/255, 0)
+	Pink = NewColour(1, 192.0/255, 203.0/255)
+	Purple = NewColour(128.0/255, 0, 128.0/255)
 }
 
 func NewColour(r, g, b float64) Colour {

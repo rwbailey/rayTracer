@@ -28,7 +28,7 @@ func main() {
 func planeScene() *tracer.Canvas {
 
 	floor := tracer.NewPlane()
-	floor.Material.Colour = tracer.White
+	floor.Material.Colour = tracer.Pink
 	floor.Material.Shininess = 100
 
 	middle := tracer.NewSphere()
@@ -37,21 +37,21 @@ func planeScene() *tracer.Canvas {
 	middle.Material.Colour = tracer.NewColour(0.68, 0.85, 0.9)
 	middle.Material.Diffuse = 0.7
 	middle.Material.Specular = 0.3
-	middle.Material.Pattern = tracer.NewStripePattern(tracer.Black, tracer.White)
+	middle.Material.Pattern = tracer.NewStripePattern(tracer.Blue, tracer.Orange)
 	trns := tracer.IdentityMatrix(4).Scale(0.2, 0.2, 0.2).RotateX(math.Pi / 6).RotateY(math.Pi / 6).RotateZ(math.Pi / 6)
 	middle.Material.Pattern.SetTransform(trns)
 
 	right := tracer.NewSphere()
 	right.Transform = tracer.TranslationMatrix(1.5, 0.5, -0.5).MultiplyMatrix(tracer.ScalingMatrix(0.5, 0.5, 0.5))
 	right.Material = tracer.NewMaterial()
-	right.Material.Colour = tracer.NewColour(0.5, 1, 0.1)
+	right.Material.Colour = tracer.Purple
 	right.Material.Diffuse = 0.7
 	right.Material.Specular = 0.3
 
 	left := tracer.NewSphere()
 	left.Transform = tracer.TranslationMatrix(-1.5, 0.33, -0.75).MultiplyMatrix(tracer.ScalingMatrix(0.33, 0.33, 0.33))
 	left.Material = tracer.NewMaterial()
-	left.Material.Colour = tracer.NewColour(1, 0.8, 0.1)
+	left.Material.Colour = tracer.Gold
 	left.Material.Diffuse = 0.7
 	left.Material.Specular = 0.3
 
