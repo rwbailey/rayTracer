@@ -51,18 +51,19 @@ func TestAStripePatternAlternatesInX(t *testing.T) {
 
 func TestLightingWithPattern(t *testing.T) {
 	// Given
-	m := NewMaterial()
-	m.Pattern = NewStripePattern(White, Black)
-	m.Ambient = 1
-	m.Diffuse = 0
-	m.Specular = 0
+	obj := NewSphere()
+	obj.SetMaterial(NewMaterial())
+	obj.GetMaterial().Pattern = NewStripePattern(White, Black)
+	obj.GetMaterial().Ambient = 1
+	obj.GetMaterial().Diffuse = 0
+	obj.GetMaterial().Specular = 0
 	eyev := Vector(0, 0, -1)
 	normalv := Vector(0, 0, -1)
 	light := NewPointLight(Point(0, 0, -10), White)
 
 	// When
-	c1 := m.Lighting(light, Point(0.9, 0, 0), eyev, normalv, false)
-	c2 := m.Lighting(light, Point(1.1, 0, 0), eyev, normalv, false)
+	c1 := obj.GetMaterial().Lighting(obj, light, Point(0.9, 0, 0), eyev, normalv, false)
+	c2 := obj.GetMaterial().Lighting(obj, light, Point(1.1, 0, 0), eyev, normalv, false)
 
 	// Then
 	assert.Equal(t, White, c1)

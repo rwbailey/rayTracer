@@ -51,6 +51,7 @@ func (w *World) IntersectWorld(r Ray) []*Intersection {
 // at that point in the world.
 func (w *World) ShadeHit(c *Computations) Colour {
 	return c.Object.GetMaterial().Lighting(
+		c.Object,
 		w.Light,
 		c.Point,
 		c.Eyev,

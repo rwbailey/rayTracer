@@ -7,7 +7,7 @@ type Colour struct {
 }
 
 var (
-	White, Black Colour
+	White, Black, Red, Green, Blue Colour
 )
 
 func init() {

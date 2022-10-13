@@ -24,10 +24,10 @@ func NewMaterial() *Material {
 	}
 }
 
-func (m *Material) Lighting(light *PointLight, point, eyev, normalv Tuple, inShadow bool) Colour {
+func (m *Material) Lighting(obj Shape, light *PointLight, point, eyev, normalv Tuple, inShadow bool) Colour {
 
 	if m.Pattern != nil {
-		m.Colour = m.Pattern.ColourAt(point)
+		m.Colour = m.Pattern.ColourAtObject(obj, point)
 	}
 
 	var ambient Colour
