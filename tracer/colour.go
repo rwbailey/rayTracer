@@ -66,7 +66,6 @@ func (c1 Colour) Product(c2 Colour) Colour {
 	}
 }
 
-// Equals returns true if t1 == t2, else returns false
 func (a Colour) Equals(b Colour) bool {
 	return FloatEquals(a.Red, b.Red) && FloatEquals(a.Green, b.Green) && FloatEquals(a.Blue, b.Blue)
 }
